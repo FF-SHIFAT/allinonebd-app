@@ -49,11 +49,16 @@
             </div>
         </header>
 
+        <!-- Notice Bar Section (Updated Color) -->
+        <div class="bg-blue-100 text-blue-800 p-2 text-sm font-semibold">
+            <marquee id="notice-bar-text">Loading latest announcements...</marquee>
+        </div>
+
         <!-- Page Content Area -->
         <div id="page-container">
             <!-- Home Page -->
             <div id="home-page" class="page active">
-                <main class="p-4 space-y-6 mt-4">
+                <main class="p-4 space-y-6 mt-2">
                     <section class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center shadow-sm">
                         <h2 class="text-xl font-semibold text-gray-800 mb-1">Earn Rewards</h2>
                         <div class="mt-4 bg-white p-4 rounded-lg border">
@@ -162,6 +167,11 @@
                 <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
                     <p class="text-gray-700">Withdrawal options will be available soon.</p>
                 </div>
+                <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
+                <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
+                    <p class="text-gray-600">Your payment history will appear here.</p>
+                    <!-- Placeholder for history table -->
+                </div>
             </div>
 
             <!-- Profile Page -->
@@ -258,15 +268,12 @@
         
         document.getElementById('submit-task-btn').onclick = async function() {
             if (!currentUser) return;
-            // Shothik system-e, CPA network apnar backend-ke janabe (S2S Postback).
-            // Ekhon shudhu amra user-ke ekta success message dekhacchi ebong balance update korchi.
             const userRef = doc(db, "users", currentUser.id.toString());
             const earned = 5.00; // Demo amount
             await updateDoc(userRef, {
                 balance: increment(earned)
             });
             
-            // Update balance on UI
             const newBalance = parseFloat(document.getElementById('user-balance').innerText.split(' ')[1]) + earned;
             document.getElementById('user-balance').innerText = `BDT ${newBalance.toFixed(2)}`;
             
@@ -277,11 +284,20 @@
 
         window.addEventListener('load', async function () {
             try {
+                // Fetch Notice
+                const noticeRef = doc(db, "settings", "notice");
+                const noticeSnap = await getDoc(noticeRef);
+                if (noticeSnap.exists()) {
+                    document.getElementById('notice-bar-text').innerText = noticeSnap.data().text;
+                } else {
+                     document.getElementById('notice-bar-text').innerText = "Welcome to Allinonebd! Happy Earning!";
+                }
+
                 const tg = window.Telegram.WebApp;
                 tg.ready(); 
 
                 const user = tg.initDataUnsafe?.user;
-                currentUser = user; // Store user data globally
+                currentUser = user; 
 
                 if (user) {
                     const userId = user.id.toString();
