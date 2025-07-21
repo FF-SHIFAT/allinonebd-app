@@ -30,6 +30,11 @@
         .page.active {
             display: block;
         }
+        /* Styling for disabled button */
+        .disabled-button {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -90,18 +95,70 @@
             <!-- Earn Page -->
             <div id="earn-page" class="page p-4">
                 <h2 class="text-2xl font-bold text-gray-800 mt-4">Available Tasks</h2>
-                <p class="text-gray-600 mt-2">Complete tasks to earn rewards.</p>
-                <!-- Task list will be added here later -->
-                <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
-                    <p class="text-gray-700">CTA and Ads tasks will appear here soon!</p>
+                <p class="text-gray-600 mt-2">Chose a task type to start earning.</p>
+                <div class="space-y-4 mt-6">
+                    <button onclick="navigateTo('cta-task-page')" class="w-full bg-teal-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-left flex items-center space-x-4">
+                        <i class="ph-rocket-launch-bold text-3xl"></i>
+                        <div>
+                            <span class="text-lg">Start CTA Tasks</span>
+                            <span class="text-sm block opacity-80">Complete high-reward tasks.</span>
+                        </div>
+                    </button>
+                    <button onclick="navigateTo('ads-task-page')" class="w-full bg-purple-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-purple-600 transition duration-300 text-left flex items-center space-x-4">
+                        <i class="ph-monitor-play-bold text-3xl"></i>
+                        <div>
+                            <span class="text-lg">View Daily Ads</span>
+                            <span class="text-sm block opacity-80">Watch short ads to earn. (20 left)</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- CTA Task Page -->
+            <div id="cta-task-page" class="page p-4">
+                 <div id="cta-rules">
+                    <h2 class="text-2xl font-bold text-gray-800 mt-4">Task Rules</h2>
+                    <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                        <li>Kono dhoroner <b>VPN/Proxy</b> bebohar kora jabe na.</li>
+                        <li>Eki <b>Wi-Fi/IP address</b> theke shudhu ekjon-i kaj korte parben.</li>
+                        <li>Niyom na manle account <b>block</b> kore dewa hobe.</li>
+                        <li>Apni chaile <b>Mobile Data</b> bebohar kore kaj korte paren.</li>
+                    </ul>
+                    <p class="text-sm text-gray-500 mt-2">Amader system apnar IP address check korbe.</p>
+                    <button onclick="startCtaTask()" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Start Task</button>
+                 </div>
+                 <div id="cta-work-area" style="display: none;">
+                    <h2 class="text-2xl font-bold text-gray-800 mt-4">Complete the Offer</h2>
+                    <p class="text-gray-600 mt-2">Nicher offer-ti shompurno korun.</p>
+                    <!-- CPA offer will be loaded in this iframe -->
+                    <div class="w-full h-64 bg-gray-200 mt-4 rounded-lg flex items-center justify-center">
+                        <p>CPA Offer iFrame loading...</p>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-lg">Time Remaining: <span id="timer" class="font-bold">60</span>s</p>
+                        <button id="submit-task-btn" class="w-full font-bold py-3 px-4 rounded-lg mt-5 disabled-button" disabled>Submit Task</button>
+                    </div>
+                 </div>
+                 <div id="cta-success-area" style="display: none;">
+                    <h2 class="text-2xl font-bold text-green-600 mt-4">Task Successful!</h2>
+                    <p class="text-gray-700 mt-2">Apni <span id="earned-amount" class="font-bold">5.00 BDT</span> peyechen!</p>
+                    <button onclick="startCtaTask()" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-blue-700">Finish Another Task</button>
+                    <button onclick="navigateTo('home-page')" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg mt-3 hover:bg-gray-700">Back to Home</button>
+                 </div>
+            </div>
+
+            <!-- Ads Task Page -->
+            <div id="ads-task-page" class="page p-4">
+                <h2 class="text-2xl font-bold text-gray-800 mt-4">View Ads</h2>
+                 <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
+                    <p class="text-gray-700">15-second ads will appear here soon!</p>
                 </div>
             </div>
 
             <!-- Withdraw Page -->
             <div id="withdraw-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
+                 <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
                 <p class="text-gray-600 mt-2">Request a payment to your account.</p>
-                 <!-- Withdraw form will be added here later -->
                 <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
                     <p class="text-gray-700">Withdrawal options will be available soon.</p>
                 </div>
@@ -111,7 +168,6 @@
             <div id="profile-page" class="page p-4">
                 <h2 class="text-2xl font-bold text-gray-800 mt-4">My Profile</h2>
                 <p class="text-gray-600 mt-2">View your account details and history.</p>
-                <!-- Profile details will be added here later -->
                 <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
                     <p class="text-gray-700">User statistics and settings will be here.</p>
                 </div>
@@ -141,11 +197,9 @@
 
     <!-- Firebase SDK and Initialization Script -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDAVMpxqTzDCAhpIrwf-Vp4fhHcdls36yM",
             authDomain: "allinonebdapp.firebaseapp.com",
@@ -155,24 +209,16 @@
             appId: "1:755907154415:web:f61e9fa40b23b47f91661a"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        console.log("Firebase Initialized Successfully!");
+        let currentUser = null;
 
-        // --- Page Navigation Logic ---
         const pages = document.querySelectorAll('.page');
         const navLinks = document.querySelectorAll('.nav-link');
 
-        window.navigateTo = function(pageId) { // Make function globally accessible
-            // Hide all pages
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            // Show the target page
+        window.navigateTo = function(pageId) {
+            pages.forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-
-            // Update active state for nav links
             navLinks.forEach(link => {
                 link.classList.remove('bg-white/20');
                 if (link.getAttribute('onclick').includes(pageId)) {
@@ -181,14 +227,61 @@
             });
         }
 
+        let timerInterval;
+        window.startCtaTask = function() {
+            document.getElementById('cta-rules').style.display = 'none';
+            document.getElementById('cta-success-area').style.display = 'none';
+            document.getElementById('cta-work-area').style.display = 'block';
 
-        // --- User Data Loading Logic ---
+            const timerEl = document.getElementById('timer');
+            const submitBtn = document.getElementById('submit-task-btn');
+            let timeLeft = 60;
+            
+            timerEl.textContent = timeLeft;
+            submitBtn.disabled = true;
+            submitBtn.classList.add('disabled-button');
+            submitBtn.textContent = 'Submit Task';
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('disabled-button');
+                    submitBtn.classList.add('bg-green-500', 'text-white');
+                    submitBtn.textContent = 'Submit Now';
+                }
+            }, 1000);
+        }
+        
+        document.getElementById('submit-task-btn').onclick = async function() {
+            if (!currentUser) return;
+            // Shothik system-e, CPA network apnar backend-ke janabe (S2S Postback).
+            // Ekhon shudhu amra user-ke ekta success message dekhacchi ebong balance update korchi.
+            const userRef = doc(db, "users", currentUser.id.toString());
+            const earned = 5.00; // Demo amount
+            await updateDoc(userRef, {
+                balance: increment(earned)
+            });
+            
+            // Update balance on UI
+            const newBalance = parseFloat(document.getElementById('user-balance').innerText.split(' ')[1]) + earned;
+            document.getElementById('user-balance').innerText = `BDT ${newBalance.toFixed(2)}`;
+            
+            document.getElementById('cta-work-area').style.display = 'none';
+            document.getElementById('cta-success-area').style.display = 'block';
+        };
+
+
         window.addEventListener('load', async function () {
             try {
                 const tg = window.Telegram.WebApp;
                 tg.ready(); 
 
                 const user = tg.initDataUnsafe?.user;
+                currentUser = user; // Store user data globally
 
                 if (user) {
                     const userId = user.id.toString();
@@ -216,7 +309,6 @@
                 } else {
                     document.getElementById('user-name').innerText = "Guest User";
                     document.getElementById('user-balance').innerText = "BDT 0.00";
-                    console.log("Not running inside Telegram or DB not ready.");
                 }
             } catch (error) {
                 console.error("Error during initialization: ", error);
