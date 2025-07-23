@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allinonebd - Earn Rewards</title>
-    <!-- Telegram Web App Script -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Phosphor Icons for navigation -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         body {
@@ -45,10 +41,9 @@
 <body class="max-w-md mx-auto">
 
     <div class="min-h-screen bg-white shadow-lg pb-24">
-        <!-- Header Section -->
         <header class="bg-blue-600 text-white p-4 flex items-center space-x-3 rounded-b-2xl sticky top-0 z-10">
             <button id="back-button" onclick="goBack()" class="hidden w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors">
-                <i class="ph-arrow-left-bold text-2xl text-white"></i>
+                <i class="ph-arrow-left-bold text-2xl text-blue-800"></i>
             </button>
             <img id="user-avatar" src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
             <div>
@@ -57,16 +52,12 @@
             </div>
         </header>
 
-        <!-- Notice Bar Section -->
         <div class="bg-blue-100 text-blue-800 p-2 text-sm font-semibold">
             <marquee id="notice-bar-text">Loading latest announcements...</marquee>
         </div>
 
-        <!-- Page Content Area -->
         <div id="page-container">
-            <!-- Home Page -->
             <div id="home-page" class="page active">
-                <!-- Top Banner Ad Slot for Home Page -->
                 <div class="p-2 text-center bg-gray-100 my-2">
                     <img src="https://placehold.co/320x50/eee/333?text=Top+Banner+Ad" alt="Top Banner Ad" class="mx-auto">
                 </div>
@@ -107,16 +98,13 @@
                         </div>
                     </section>
                 </main>
-                <!-- Bottom Banner Ad Slot for Home Page -->
                 <div class="p-2 text-center bg-gray-100 mt-2">
                      <img src="https://placehold.co/320x50/eee/333?text=Bottom+Banner+Ad" alt="Bottom Banner Ad" class="mx-auto">
                 </div>
             </div>
 
-            <!-- Earn Page -->
             <div id="earn-page" class="page p-4">
-                 <!-- Top Banner Ad Slot for Earn Page -->
-                <div class="p-2 text-center bg-gray-100 mb-4">
+                 <div class="p-2 text-center bg-gray-100 mb-4">
                     <img src="https://placehold.co/320x50/eee/333?text=Top+Banner+Ad" alt="Top Banner Ad" class="mx-auto">
                 </div>
                 <h2 class="text-2xl font-bold text-gray-800">Available Tasks</h2>
@@ -137,13 +125,11 @@
                         </div>
                     </button>
                 </div>
-                <!-- Bottom Banner Ad Slot for Earn Page -->
                 <div class="p-2 text-center bg-gray-100 mt-6">
                     <img src="https://placehold.co/320x50/eee/333?text=Bottom+Banner+Ad" alt="Bottom Banner Ad" class="mx-auto">
                 </div>
             </div>
             
-            <!-- CTA Task Rules Page -->
             <div id="cta-task-page" class="page p-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-gray-800">Task Rules</h2>
@@ -153,7 +139,6 @@
                 <button onclick="navigateTo('cta-network-page')" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Continue</button>
             </div>
 
-            <!-- CTA Network Page -->
             <div id="cta-network-page" class="page p-4">
                 <h2 class="text-2xl font-bold text-gray-800">CTA Task Networks</h2>
                 <div class="space-y-4 mt-6">
@@ -175,7 +160,6 @@
                 </div>
             </div>
 
-            <!-- Ads Task Page -->
             <div id="ads-task-page" class="page p-4">
                 <h2 class="text-2xl font-bold text-gray-800">View Ads</h2>
                 <div id="ad-container" class="mt-6 p-5 border rounded-lg text-center bg-gray-800 text-white relative h-64 flex flex-col items-center justify-center" style="display: none;">
@@ -188,7 +172,6 @@
                 <button id="start-ad-btn" onclick="startAdView()" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-purple-700">Start Viewing Ads</button>
             </div>
 
-            <!-- Withdraw Page (Reverted & Improved as per request) -->
             <div id="withdraw-page" class="page p-4">
                  <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
                  <div class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg">
@@ -202,8 +185,7 @@
                             <option value="nagad">Nagad</option>
                             <option value="rocket">Rocket</option>
                             <option value="payoneer">Payoneer</option>
-                            <!-- Crypto option can be added later from Admin Panel -->
-                        </select>
+                            </select>
                     </div>
                     <div>
                         <label id="withdraw-address-label" for="withdraw-address" class="block text-sm font-medium text-gray-700">Account Number</label>
@@ -215,14 +197,13 @@
                     </div>
                  </div>
                  <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
-                 
+                
                 <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
                 <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
                     <p class="text-gray-600">Your payment history will appear here.</p>
                 </div>
             </div>
 
-            <!-- Profile Page (Reverted & Improved as per request) -->
             <div id="profile-page" class="page p-4">
                 <div class="text-center">
                     <img id="profile-avatar" src="https://placehold.co/80x80/e0e7ff/4338ca?text=U" class="w-20 h-20 rounded-full mx-auto border-4 border-white shadow-lg">
@@ -250,11 +231,10 @@
                             <input id="referral-link" type="text" class="flex-1 bg-transparent text-sm text-gray-700 focus:outline-none" value="Loading your link..." readonly>
                             <button onclick="copyReferralLink()" class="ml-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-md text-xs font-semibold">Copy</button>
                         </div>
-                        <button class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg mt-4 hover:bg-indigo-700">Share Link</button>
+                        <button onclick="shareReferralLink()" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg mt-4 hover:bg-indigo-700">Share Link</button>
                     </div>
                 </div>
-                 <!-- Referral List -->
-                <div class="mt-8">
+                 <div class="mt-8">
                     <h3 class="text-xl font-bold text-gray-800">Your Referrals (<span id="profile-total-referrals">0</span>)</h3>
                     <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
                         <p class="text-gray-600">Your referred users' list will appear here.</p>
@@ -264,7 +244,6 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
     <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bottom-nav-gradient text-white p-2 flex justify-around rounded-t-2xl shadow-lg">
         <a href="#" onclick="navigateTo('home-page')" class="nav-link text-center p-2 rounded-lg">
             <i class="ph-house-fill text-2xl"></i>
@@ -284,10 +263,8 @@
         </a>
     </nav>
     
-    <!-- Toast Notification -->
     <div id="toast"></div>
 
-    <!-- Firebase SDK and Initialization Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -341,7 +318,7 @@
 
         const rules = {
             en: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>Using any kind of <b>VPN/Proxy</b> is strictly prohibited.</li><li>Only one user can work from the same <b>Wi-Fi/IP address</b>.</li><li>Your account will be <b>blocked</b> for violating the rules.</li><li>You can use <b>Mobile Data</b> to work if needed.</li></ul><p class="text-sm text-gray-500 mt-2">Our system will check your IP address before starting the task.</p>`,
-            bn: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li><li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li><li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li><li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li></ul><p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>`
+            bn: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li><li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li><li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li><li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li></ul><p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>`
         };
         let currentLanguage = 'en';
 
@@ -382,6 +359,29 @@
             }
         }
         
+        // MODIFICATION 2: Added the share functionality
+        window.shareReferralLink = function() {
+            const referralLink = document.getElementById('referral-link').value;
+            if (!referralLink || referralLink.includes('Loading') || referralLink.includes('Please open')) {
+                showToast("Referral link not available yet.");
+                return;
+            }
+
+            const shareText = "Hey! Join me on Allinonebd and start earning rewards! 💰";
+            
+            // Construct the Telegram share URL
+            const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
+
+            // Use Telegram Web App's API to open the share link
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
+            } else {
+                // Fallback for testing in a normal browser
+                window.open(telegramShareUrl, '_blank');
+                showToast("Opening share link in a new tab.");
+            }
+        }
+
         window.updateWithdrawUI = function() {
             const method = document.getElementById('withdraw-method').value;
             const label = document.getElementById('withdraw-address-label');
