@@ -42,8 +42,8 @@
 
     <div class="min-h-screen bg-white shadow-lg pb-24">
         <header class="bg-blue-600 text-white p-4 flex items-center space-x-3 rounded-b-2xl sticky top-0 z-10">
-            <button id="back-button" onclick="goBack()" class="hidden w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors">
-                <i class="ph-arrow-left-bold text-2xl text-blue-800"></i>
+            <button id="back-button" onclick="goBack()" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-blue-700 hover:bg-blue-800 transition-colors">
+                <i class="ph-arrow-left-bold text-2xl text-white"></i>
             </button>
             <img id="user-avatar" src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
             <div>
@@ -180,20 +180,20 @@
                  <div class="mt-6 space-y-4">
                     <div>
                         <label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label>
-                        <select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                             <option value="bkash">Bkash</option>
                             <option value="nagad">Nagad</option>
                             <option value="rocket">Rocket</option>
                             <option value="payoneer">Payoneer</option>
-                            </select>
+                        </select>
                     </div>
                     <div>
                         <label id="withdraw-address-label" for="withdraw-address" class="block text-sm font-medium text-gray-700">Account Number</label>
-                        <input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000">
+                        <input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000">
                     </div>
                     <div>
-                        <label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 200 BDT)</label>
-                        <input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="200">
+                        <label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 2000 BDT)</label>
+                        <input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="2000">
                     </div>
                  </div>
                  <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
@@ -282,7 +282,7 @@
         const db = getFirestore(app);
         let currentUser = null;
 
-        const backButton = document.getElementById('back-button');
+        // MODIFICATION: Moved backButton lookup inside updateUI
         let pageHistory = ['home-page'];
 
         window.navigateTo = function(pageId) {
@@ -304,9 +304,20 @@
             }
         }
         
+        // MODIFICATION: Final attempt with direct, robust visibility control
         function updateUI() {
+            const backButton = document.getElementById('back-button');
+            if (!backButton) {
+                return; // Guard clause if button not found
+            }
+
             const currentPageId = pageHistory[pageHistory.length - 1];
-            backButton.classList.toggle('hidden', currentPageId === 'home-page');
+            
+            if (currentPageId === 'home-page') {
+                backButton.style.visibility = 'hidden';
+            } else {
+                backButton.style.visibility = 'visible';
+            }
             
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-white/20');
@@ -358,7 +369,6 @@
             }
         }
         
-        // MODIFICATION: Updated the share function to prevent the app from closing.
         window.shareReferralLink = async function() {
             const referralLink = document.getElementById('referral-link').value;
             if (!referralLink || referralLink.includes('Loading') || referralLink.includes('Please open')) {
@@ -373,17 +383,13 @@
                 url: referralLink,
             };
 
-            // Use Web Share API if supported (keeps the app open)
             if (navigator.share) {
                 try {
                     await navigator.share(shareData);
                 } catch (err) {
-                    // This error can happen if the user cancels the share.
-                    // We can ignore it.
                     console.log("Share cancelled or failed", err);
                 }
             } else {
-                // Fallback for older devices: Use the old method that closes the app.
                 const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
