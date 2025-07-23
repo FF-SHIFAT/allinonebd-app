@@ -48,17 +48,15 @@
             <marquee id="notice-bar-text">Loading latest announcements...</marquee>
         </div>
 
-        <!-- Top Banner Ad Slot -->
-        <div id="top-banner-ad" class="p-2 text-center bg-gray-100" style="display: none;">
-            <small>Top Banner Ad</small>
-        </div>
-
         <!-- Page Content Area -->
         <div id="page-container">
             <!-- Home Page -->
             <div id="home-page" class="page active">
-                <main class="p-4 space-y-6 mt-2">
-                    <!-- Home page content remains same -->
+                <!-- Top Banner Ad Slot for Home Page -->
+                <div class="p-2 text-center bg-gray-100 my-2">
+                    <small>Top Banner Ad</small>
+                </div>
+                <main class="p-4 space-y-6">
                     <section class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center shadow-sm">
                         <h2 class="text-xl font-semibold text-gray-800 mb-1">Earn Rewards</h2>
                         <div class="mt-4 bg-white p-4 rounded-lg border">
@@ -95,11 +93,19 @@
                         </div>
                     </section>
                 </main>
+                <!-- Bottom Banner Ad Slot for Home Page -->
+                <div class="p-2 text-center bg-gray-100 mt-2">
+                    <small>Bottom Banner Ad</small>
+                </div>
             </div>
 
             <!-- Earn Page -->
             <div id="earn-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mt-4">Available Tasks</h2>
+                 <!-- Top Banner Ad Slot for Earn Page -->
+                <div class="p-2 text-center bg-gray-100 mb-4">
+                    <small>Top Banner Ad</small>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">Available Tasks</h2>
                 <p class="text-gray-600 mt-2">Choose a task type to start earning.</p>
                 <div class="space-y-4 mt-6">
                     <button onclick="navigateTo('cta-task-page')" class="w-full bg-teal-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-left flex items-center space-x-4">
@@ -117,18 +123,30 @@
                         </div>
                     </button>
                 </div>
+                <!-- Bottom Banner Ad Slot for Earn Page -->
+                <div class="p-2 text-center bg-gray-100 mt-6">
+                    <small>Bottom Banner Ad</small>
+                </div>
             </div>
             
             <!-- CTA Task Rules Page -->
             <div id="cta-task-page" class="page p-4">
+                <!-- Top Banner Ad Slot for Rules Page -->
+                <div class="p-2 text-center bg-gray-100 mb-4">
+                    <small>Top Banner Ad</small>
+                </div>
                 <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold text-gray-800 mt-4">Task Rules</h2>
-                    <button id="lang-toggle" onclick="toggleLanguage()" class="mt-4 bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded-lg text-xs">বাংলা</button>
+                    <h2 class="text-2xl font-bold text-gray-800">Task Rules</h2>
+                    <button id="lang-toggle" onclick="toggleLanguage()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded-lg text-xs">বাংলা</button>
                 </div>
                 <div id="task-rules-content">
                     <!-- Content will be loaded by JavaScript -->
                 </div>
                 <button onclick="navigateTo('cta-network-page')" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Continue</button>
+                <!-- Bottom Banner Ad Slot for Rules Page -->
+                <div class="p-2 text-center bg-gray-100 mt-6">
+                    <small>Bottom Banner Ad</small>
+                </div>
             </div>
 
             <!-- CTA Network Page -->
@@ -158,11 +176,6 @@
             <div id="ads-task-page" class="page p-4"></div>
             <div id="withdraw-page" class="page p-4"></div>
             <div id="profile-page" class="page p-4"></div>
-        </div>
-
-        <!-- Bottom Banner Ad Slot -->
-        <div id="bottom-banner-ad" class="p-2 text-center bg-gray-100" style="display: none;">
-            <small>Bottom Banner Ad</small>
         </div>
     </div>
 
