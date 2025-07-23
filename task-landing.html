@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Task - Allinonebd</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .disabled-button {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="max-w-lg mx-auto p-4">
+        <!-- Top Banner Ad -->
+        <div class="mb-4 h-16 bg-gray-300 rounded-lg flex items-center justify-center">
+            <p class="text-gray-500">Top Banner Ad Slot</p>
+        </div>
+
+        <!-- Main Task Area -->
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <h1 class="text-2xl font-bold text-center text-gray-800">Complete The Task</h1>
+            <p class="text-center text-gray-500 mt-2">Finish the offer below to get your reward.</p>
+
+            <!-- CPA Offer Wall iFrame -->
+            <div id="cpa-offer-wall" class="mt-6 w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
+                <p class="text-gray-600">CPA Offer Wall will load here...</p>
+            </div>
+
+            <!-- Timer and Submit Button -->
+            <div class="mt-6 text-center">
+                <p class="text-lg">Please wait for <span id="task-timer" class="font-bold text-red-500">40</span> seconds</p>
+                <button id="task-submit-btn" class="w-full font-bold py-3 px-4 rounded-lg mt-4 text-white disabled-button" disabled>
+                    Submit Task
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bottom Banner Ad -->
+        <div class="mt-4 h-16 bg-gray-300 rounded-lg flex items-center justify-center">
+            <p class="text-gray-500">Bottom Banner Ad Slot</p>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center max-w-sm mx-4">
+                <h2 class="text-2xl font-bold text-green-600">Task Successful!</h2>
+                <p class="text-gray-700 mt-2">You have earned <span id="reward-amount" class="font-bold">8.00 BDT</span>!</p>
+                <div class="mt-6 space-y-3">
+                    <button onclick="window.location.reload()" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700">Do Another Task</button>
+                    <button onclick="closeApp()" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-700">Back to App</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telegram Web App Script -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const timerEl = document.getElementById('task-timer');
+        const submitBtn = document.getElementById('task-submit-btn');
+        const successModal = document.getElementById('success-modal');
+        let timeLeft = 40;
+
+        // Function to close the web app (return to the bot)
+        function closeApp() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.close();
+            }
+        }
+
+        // Start the timer when the page loads
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            timerEl.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerEl.parentElement.textContent = "You can now submit the task!";
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('disabled-button');
+                submitBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+            }
+        }, 1000);
+
+        // Handle task submission
+        submitBtn.onclick = function() {
+            // In a real app, you would verify the task completion with your backend.
+            // For now, we'll just show the success message.
+            // We'll also need to pass the user ID and task ID to the backend to add the balance.
+            successModal.style.display = 'flex';
+        };
+    </script>
+</body>
+</html>
