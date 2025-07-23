@@ -344,7 +344,6 @@
         
         window.copyReferralLink = function() {
             const referralLinkInput = document.getElementById('referral-link');
-            // Fallback for older browsers / restrictive environments
             referralLinkInput.select();
             referralLinkInput.setSelectionRange(0, 99999); // For mobile devices
             try {
@@ -359,8 +358,8 @@
             }
         }
         
-        // MODIFICATION 2: Added the share functionality
-        window.shareReferralLink = function() {
+        // MODIFICATION: Updated the share function to prevent the app from closing.
+        window.shareReferralLink = async function() {
             const referralLink = document.getElementById('referral-link').value;
             if (!referralLink || referralLink.includes('Loading') || referralLink.includes('Please open')) {
                 showToast("Referral link not available yet.");
@@ -368,17 +367,29 @@
             }
 
             const shareText = "Hey! Join me on Allinonebd and start earning rewards! 💰";
-            
-            // Construct the Telegram share URL
-            const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
+            const shareData = {
+                title: 'Join Allinonebd',
+                text: shareText,
+                url: referralLink,
+            };
 
-            // Use Telegram Web App's API to open the share link
-            if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
+            // Use Web Share API if supported (keeps the app open)
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    // This error can happen if the user cancels the share.
+                    // We can ignore it.
+                    console.log("Share cancelled or failed", err);
+                }
             } else {
-                // Fallback for testing in a normal browser
-                window.open(telegramShareUrl, '_blank');
-                showToast("Opening share link in a new tab.");
+                // Fallback for older devices: Use the old method that closes the app.
+                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
+                } else {
+                    window.open(telegramShareUrl, '_blank');
+                }
             }
         }
 
@@ -413,9 +424,7 @@
 
                 const tg = window.Telegram.WebApp;
                 
-                // FIXED: Check if tg and initData are available before using them
                 if (typeof tg === 'undefined' || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-                    // This block will run when testing in a normal browser
                     document.getElementById('user-name').innerText = "Guest User";
                     document.getElementById('user-balance').innerText = "BDT 0.00";
                     document.getElementById('profile-name').innerText = "Guest User";
@@ -423,7 +432,7 @@
                     document.getElementById('profile-balance').innerText = "BDT 0.00";
                     document.getElementById('referral-link').value = "Please open in Telegram to get your link.";
                     console.log("Running outside of Telegram or user data not found.");
-                    return; // Exit the function early
+                    return; 
                 }
                 
                 tg.ready(); 
@@ -442,7 +451,6 @@
 
                 if (docSnap.exists()) {
                     const userData = docSnap.data();
-                    // Update all UI elements with user data
                     document.getElementById('user-name').innerText = userData.name;
                     document.getElementById('user-balance').innerText = `BDT ${userData.balance.toFixed(2)}`;
                     document.getElementById('total-referrals').innerText = userData.referrals || 0;
@@ -465,7 +473,6 @@
                         joinedAt: new Date()
                     };
                     await setDoc(userRef, newUser);
-                    // Update UI for new user
                     document.getElementById('user-name').innerText = newUser.name;
                     document.getElementById('user-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
                     document.getElementById('profile-name').innerText = newUser.name;
