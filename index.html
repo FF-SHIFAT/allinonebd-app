@@ -25,6 +25,21 @@
         .page { display: none; }
         .page.active { display: block; }
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
+        /* Custom toast for notifications */
+        #toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2d3748;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -32,11 +47,10 @@
     <div class="min-h-screen bg-white shadow-lg pb-24">
         <!-- Header Section -->
         <header class="bg-blue-600 text-white p-4 flex items-center space-x-3 rounded-b-2xl sticky top-0 z-10">
-            <!-- Updated & More Visible Back Button -->
             <button id="back-button" onclick="goBack()" class="hidden w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors">
                 <i class="ph-arrow-left-bold text-2xl text-white"></i>
             </button>
-            <img src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
+            <img id="user-avatar" src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
             <div>
                 <h1 id="user-name" class="text-lg font-bold">Loading...</h1>
                 <p id="user-balance" class="text-sm font-medium">Loading...</p>
@@ -118,28 +132,17 @@
             
             <!-- CTA Task Rules Page -->
             <div id="cta-task-page" class="page p-4">
-                <!-- Top Banner Ad Slot for Rules Page -->
-                <div class="p-2 text-center bg-gray-100 mb-4">
-                    <img src="https://placehold.co/320x50/eee/333?text=Top+Banner+Ad" alt="Top Banner Ad" class="mx-auto">
-                </div>
                 <div class="flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-gray-800">Task Rules</h2>
                     <button id="lang-toggle" onclick="toggleLanguage()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded-lg text-xs">বাংলা</button>
                 </div>
-                <div id="task-rules-content">
-                    <!-- Content will be loaded by JavaScript -->
-                </div>
+                <div id="task-rules-content"></div>
                 <button onclick="navigateTo('cta-network-page')" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Continue</button>
-                <!-- Bottom Banner Ad Slot for Rules Page -->
-                <div class="p-2 text-center bg-gray-100 mt-6">
-                    <img src="https://placehold.co/320x50/eee/333?text=Bottom+Banner+Ad" alt="Bottom Banner Ad" class="mx-auto">
-                </div>
             </div>
 
             <!-- CTA Network Page -->
             <div id="cta-network-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mt-4">CTA Task Networks</h2>
-                <p class="text-gray-600 mt-2">Select a network to view tasks.</p>
+                <h2 class="text-2xl font-bold text-gray-800">CTA Task Networks</h2>
                 <div class="space-y-4 mt-6">
                     <button id="network-a-btn" onclick="openTaskLanding('networkA')" class="w-full bg-blue-500 text-white p-4 rounded-lg text-left">
                         <div class="flex justify-between items-center">
@@ -161,33 +164,42 @@
 
             <!-- Ads Task Page -->
             <div id="ads-task-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mt-4">View Ads</h2>
-                <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
-                    <p class="text-gray-700">15-second ads will appear here soon!</p>
+                <h2 class="text-2xl font-bold text-gray-800">View Ads</h2>
+                <div id="ad-container" class="mt-6 p-5 border rounded-lg text-center bg-gray-800 text-white relative h-64 flex flex-col items-center justify-center" style="display: none;">
+                    <p>Ad will be shown here</p>
+                    <div id="ad-timer-container" class="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
+                        Time left: <span id="ad-timer">15</span>s
+                    </div>
+                    <button id="ad-close-btn" class="hidden absolute top-2 left-2 bg-red-500 rounded-full w-6 h-6 flex items-center justify-center text-white font-bold">X</button>
                 </div>
+                <button id="start-ad-btn" onclick="startAdView()" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-purple-700">Start Viewing Ads</button>
             </div>
 
-            <!-- Withdraw Page -->
+            <!-- Withdraw Page (Reverted & Improved as per request) -->
             <div id="withdraw-page" class="page p-4">
                  <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
                  <div class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg">
                     <p class="text-sm text-blue-800"><b>Note:</b> Withdrawals are processed twice a month: on the 15th-17th, and on the last 3 days of the month.</p>
                  </div>
-                 <div class="mt-6">
-                    <label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label>
-                    <select id="withdraw-method" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                        <option>Bkash</option>
-                        <option>Nagad</option>
-                        <option>Rocket</option>
-                    </select>
-                 </div>
-                 <div class="mt-4">
-                    <label for="withdraw-number" class="block text-sm font-medium text-gray-700">Account Number</label>
-                    <input type="text" id="withdraw-number" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000">
-                 </div>
-                 <div class="mt-4">
-                    <label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 200 BDT)</label>
-                    <input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="200">
+                 <div class="mt-6 space-y-4">
+                    <div>
+                        <label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                        <select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="bkash">Bkash</option>
+                            <option value="nagad">Nagad</option>
+                            <option value="rocket">Rocket</option>
+                            <option value="payoneer">Payoneer</option>
+                            <!-- Crypto option can be added later from Admin Panel -->
+                        </select>
+                    </div>
+                    <div>
+                        <label id="withdraw-address-label" for="withdraw-address" class="block text-sm font-medium text-gray-700">Account Number</label>
+                        <input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000">
+                    </div>
+                    <div>
+                        <label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 2000 BDT)</label>
+                        <input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="200">
+                    </div>
                  </div>
                  <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
                  
@@ -197,21 +209,26 @@
                 </div>
             </div>
 
-            <!-- Profile Page -->
+            <!-- Profile Page (Reverted & Improved as per request) -->
             <div id="profile-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mt-4">My Profile</h2>
-                <!-- User Stats -->
-                <div class="mt-6 grid grid-cols-2 gap-4 text-center">
-                    <div class="bg-gray-100 p-4 rounded-lg">
-                        <p class="text-sm text-gray-600">Total Earned</p>
-                        <p id="profile-total-earned" class="text-2xl font-bold text-green-600">BDT 0.00</p>
+                <div class="text-center">
+                    <img id="profile-avatar" src="https://placehold.co/80x80/e0e7ff/4338ca?text=U" class="w-20 h-20 rounded-full mx-auto border-4 border-white shadow-lg">
+                    <h2 id="profile-name" class="text-2xl font-bold text-gray-800 mt-3">Loading...</h2>
+                    <p id="profile-username" class="text-gray-500">@username</p>
+                    <p class="mt-1 text-lg font-semibold text-green-600">Balance: <span id="profile-balance">BDT 0.00</span></p>
+                </div>
+
+                <div class="mt-8 grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border">
+                        <p class="text-sm text-gray-600">Total Earnings</p>
+                        <p id="profile-total-earned" class="text-2xl font-bold text-blue-600">BDT 0.00</p>
                     </div>
-                    <div class="bg-gray-100 p-4 rounded-lg">
-                        <p class="text-sm text-gray-600">Tasks Completed</p>
-                        <p id="profile-tasks-completed" class="text-2xl font-bold">0</p>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border">
+                        <p class="text-sm text-gray-600">Ads Watched</p>
+                        <p id="profile-ads-watched" class="text-2xl font-bold">0</p>
                     </div>
                 </div>
-                <!-- Refer & Earn Section -->
+                
                 <div class="mt-8">
                     <h3 class="text-xl font-bold text-gray-800">Refer & Earn</h3>
                     <div class="mt-4 bg-gray-50 border p-4 rounded-lg">
@@ -236,23 +253,26 @@
 
     <!-- Bottom Navigation Bar -->
     <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bottom-nav-gradient text-white p-2 flex justify-around rounded-t-2xl shadow-lg">
-        <a href="#" onclick="navigateTo('home-page')" class="nav-link text-center p-2 rounded-lg bg-white/20">
+        <a href="#" onclick="navigateTo('home-page')" class="nav-link text-center p-2 rounded-lg">
             <i class="ph-house-fill text-2xl"></i>
-            <span class="text-xs block">Home</span>
+            <span class="text-xs block font-semibold">Home</span>
         </a>
         <a href="#" onclick="navigateTo('earn-page')" class="nav-link text-center p-2 rounded-lg">
             <i class="ph-money-fill text-2xl"></i>
-            <span class="text-xs block">Earn</span>
+            <span class="text-xs block font-semibold">Earn</span>
         </a>
         <a href="#" onclick="navigateTo('withdraw-page')" class="nav-link text-center p-2 rounded-lg">
             <i class="ph-wallet-fill text-2xl"></i>
-            <span class="text-xs block">Withdraw</span>
+            <span class="text-xs block font-semibold">Withdraw</span>
         </a>
         <a href="#" onclick="navigateTo('profile-page')" class="nav-link text-center p-2 rounded-lg">
             <i class="ph-user-fill text-2xl"></i>
-            <span class="text-xs block">Profile</span>
+            <span class="text-xs block font-semibold">Profile</span>
         </a>
     </nav>
+    
+    <!-- Toast Notification -->
+    <div id="toast"></div>
 
     <!-- Firebase SDK and Initialization Script -->
     <script type="module">
@@ -272,8 +292,6 @@
         const db = getFirestore(app);
         let currentUser = null;
 
-        const pageContainer = document.getElementById('page-container');
-        const navLinks = document.querySelectorAll('.nav-link');
         const backButton = document.getElementById('back-button');
         let pageHistory = ['home-page'];
 
@@ -298,14 +316,9 @@
         
         function updateUI() {
             const currentPageId = pageHistory[pageHistory.length - 1];
-            // Updated Back button visibility logic
-            if (currentPageId === 'home-page') {
-                backButton.classList.add('hidden');
-            } else {
-                backButton.classList.remove('hidden');
-            }
+            backButton.classList.toggle('hidden', currentPageId === 'home-page');
             
-            navLinks.forEach(link => {
+            document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-white/20');
                 if (link.getAttribute('onclick').includes(currentPageId)) {
                     link.classList.add('bg-white/20');
@@ -318,96 +331,119 @@
             bn: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li><li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li><li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li><li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li></ul><p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>`
         };
         let currentLanguage = 'en';
-        const rulesContentEl = document.getElementById('task-rules-content');
-        const langToggleBtn = document.getElementById('lang-toggle');
 
         window.toggleLanguage = function() {
             currentLanguage = (currentLanguage === 'en') ? 'bn' : 'en';
-            rulesContentEl.innerHTML = rules[currentLanguage];
-            langToggleBtn.innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
+            document.getElementById('task-rules-content').innerHTML = rules[currentLanguage];
+            document.getElementById('lang-toggle').innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
         }
 
         window.openTaskLanding = async function(networkId) {
-            const isIpBlocked = await checkIpAddress();
-            if (isIpBlocked) {
-                document.getElementById('ip-warning').style.display = 'block';
-                document.getElementById('network-a-btn').classList.add('disabled-button');
-                document.getElementById('network-b-btn').classList.add('disabled-button');
-                return;
-            }
             const taskUrl = `https://allinonebd.me/task-landing.html?network=${networkId}&uid=${currentUser.id}`;
             window.Telegram.WebApp.openLink(taskUrl);
         }
 
-        async function checkIpAddress() {
-            console.log("Checking IP address... (simulation)");
-            return false;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.opacity = 1;
+            setTimeout(() => {
+                toast.style.opacity = 0;
+            }, 2000);
         }
         
         window.copyReferralLink = function() {
             const referralLinkInput = document.getElementById('referral-link');
-            referralLinkInput.select();
-            referralLinkInput.setSelectionRange(0, 99999); 
-            try {
-                navigator.clipboard.writeText(referralLinkInput.value);
-                alert("Referral link copied!"); 
-            } catch (err) {
+            navigator.clipboard.writeText(referralLinkInput.value).then(() => {
+                showToast("Referral link copied!");
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback for older browsers
+                referralLinkInput.select();
                 document.execCommand('copy');
-                alert("Referral link copied!");
+                showToast("Referral link copied!");
+            });
+        }
+        
+        window.updateWithdrawUI = function() {
+            const method = document.getElementById('withdraw-method').value;
+            const label = document.getElementById('withdraw-address-label');
+            const input = document.getElementById('withdraw-address');
+            
+            if (method === 'payoneer') {
+                label.textContent = 'Payoneer Email';
+                input.placeholder = 'Enter your Payoneer email';
+            } else { // bkash, nagad, rocket
+                label.textContent = 'Account Number';
+                input.placeholder = 'e.g., 01700000000';
             }
         }
 
         window.addEventListener('load', async function () {
-            updateUI(); // Set initial UI state
+            updateUI();
+            document.getElementById('task-rules-content').innerHTML = rules[currentLanguage];
+            
             try {
-                rulesContentEl.innerHTML = rules[currentLanguage];
                 const noticeRef = doc(db, "settings", "notice");
                 const noticeSnap = await getDoc(noticeRef);
                 document.getElementById('notice-bar-text').innerText = noticeSnap.exists() ? noticeSnap.data().text : "Welcome to Allinonebd! Happy Earning!";
 
                 const tg = window.Telegram.WebApp;
-                tg.ready(); 
-
-                const user = tg.initDataUnsafe?.user;
-                currentUser = user; 
-
-                if (user) {
-                    const userId = user.id.toString();
-                    const userName = user.first_name + (user.last_name ? " " + user.last_name : "");
-                    const userRef = doc(db, "users", userId);
-                    const docSnap = await getDoc(userRef);
-
-                    if (docSnap.exists()) {
-                        const userData = docSnap.data();
-                        document.getElementById('user-name').innerText = userData.name;
-                        document.getElementById('user-balance').innerText = `BDT ${userData.balance.toFixed(2)}`;
-                        document.getElementById('total-referrals').innerText = userData.referrals || 0;
-                        document.getElementById('profile-total-earned').innerText = `BDT ${userData.totalEarned || userData.balance.toFixed(2)}`;
-                        document.getElementById('profile-tasks-completed').innerText = userData.tasksCompleted || 0;
-                        document.getElementById('profile-total-referrals').innerText = userData.referrals || 0;
-                        document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
-
-                    } else {
-                        const newUser = {
-                            name: userName,
-                            balance: 0,
-                            referrals: 0,
-                            totalEarned: 0,
-                            tasksCompleted: 0,
-                            joinedAt: new Date()
-                        };
-                        await setDoc(userRef, newUser);
-                        document.getElementById('user-name').innerText = newUser.name;
-                        document.getElementById('user-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
-                        document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
-                    }
-                } else {
+                // FIXED: Check if tg and user data are available before using them
+                if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+                    // This block will run when testing in a normal browser
                     document.getElementById('user-name').innerText = "Guest User";
                     document.getElementById('user-balance').innerText = "BDT 0.00";
+                    console.log("Running outside of Telegram or user data not found.");
+                    return; // Exit the function early
+                }
+                
+                tg.ready(); 
+                const user = tg.initDataUnsafe.user;
+                currentUser = user; 
+
+                const userId = user.id.toString();
+                const userName = user.first_name + (user.last_name ? " " + user.last_name : "");
+                const userRef = doc(db, "users", userId);
+                const docSnap = await getDoc(userRef);
+
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    // Update all UI elements with user data
+                    document.getElementById('user-name').innerText = userData.name;
+                    document.getElementById('user-balance').innerText = `BDT ${userData.balance.toFixed(2)}`;
+                    document.getElementById('total-referrals').innerText = userData.referrals || 0;
+                    document.getElementById('profile-name').innerText = userData.name;
+                    document.getElementById('profile-username').innerText = user.username ? `@${user.username}` : 'N/A';
+                    document.getElementById('profile-balance').innerText = `BDT ${userData.balance.toFixed(2)}`;
+                    document.getElementById('profile-total-earned').innerText = `BDT ${(userData.totalEarned || userData.balance).toFixed(2)}`;
+                    document.getElementById('profile-ads-watched').innerText = userData.adsWatched || 0;
+                    document.getElementById('profile-total-referrals').innerText = userData.referrals || 0;
+                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
+
+                } else {
+                    const newUser = {
+                        name: userName,
+                        username: user.username || null,
+                        balance: 0,
+                        referrals: 0,
+                        totalEarned: 0,
+                        adsWatched: 0,
+                        joinedAt: new Date()
+                    };
+                    await setDoc(userRef, newUser);
+                    // Update UI for new user
+                    document.getElementById('user-name').innerText = newUser.name;
+                    document.getElementById('user-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
+                    document.getElementById('profile-name').innerText = newUser.name;
+                    document.getElementById('profile-username').innerText = newUser.username ? `@${newUser.username}` : 'N/A';
+                    document.getElementById('profile-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
+                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
                 }
             } catch (error) {
                 console.error("Error during initialization: ", error);
-                document.getElementById('user-name').innerText = "Error: App not loaded";
+                document.getElementById('user-name').innerText = "Error during load";
+                document.getElementById('user-balance').innerText = "BDT 0.00";
             }
         });
     </script>
