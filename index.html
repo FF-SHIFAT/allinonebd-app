@@ -25,16 +25,16 @@
         .page { display: none; }
         .page.active { display: block; }
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
-        #back-button { display: none; } /* Back button hidden by default */
     </style>
 </head>
 <body class="max-w-md mx-auto">
 
     <div class="min-h-screen bg-white shadow-lg pb-24">
         <!-- Header Section -->
-        <header class="bg-blue-600 text-white p-4 flex items-center space-x-4 rounded-b-2xl sticky top-0 z-10">
-            <button id="back-button" onclick="goBack()" class="mr-2 p-2 rounded-full hover:bg-white/20">
-                <i class="ph-arrow-left-bold text-xl"></i>
+        <header class="bg-blue-600 text-white p-4 flex items-center space-x-3 rounded-b-2xl sticky top-0 z-10">
+            <!-- Updated & More Visible Back Button -->
+            <button id="back-button" onclick="goBack()" class="hidden w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors">
+                <i class="ph-arrow-left-bold text-2xl text-white"></i>
             </button>
             <img src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
             <div>
@@ -54,7 +54,7 @@
             <div id="home-page" class="page active">
                 <!-- Top Banner Ad Slot for Home Page -->
                 <div class="p-2 text-center bg-gray-100 my-2">
-                    <small>Top Banner Ad</small>
+                    <img src="https://placehold.co/320x50/eee/333?text=Top+Banner+Ad" alt="Top Banner Ad" class="mx-auto">
                 </div>
                 <main class="p-4 space-y-6">
                     <section class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center shadow-sm">
@@ -79,23 +79,10 @@
                             </button>
                         </div>
                     </section>
-                    <section class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center shadow-sm">
-                        <h2 class="text-xl font-semibold text-gray-800 mb-1">Refer & Earn</h2>
-                         <div class="mt-4 bg-white p-4 rounded-lg border">
-                            <div class="flex justify-between items-center mt-1 text-gray-600">
-                                <span>Total Referrals:</span>
-                                <span id="total-referrals" class="font-bold">0</span>
-                            </div>
-                            <button class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-indigo-700 transition duration-300 flex items-center justify-center space-x-2">
-                                 <i class="ph-share-network-bold"></i>
-                                <span>Invite Friends</span>
-                            </button>
-                        </div>
-                    </section>
                 </main>
                 <!-- Bottom Banner Ad Slot for Home Page -->
                 <div class="p-2 text-center bg-gray-100 mt-2">
-                    <small>Bottom Banner Ad</small>
+                     <img src="https://placehold.co/320x50/eee/333?text=Bottom+Banner+Ad" alt="Bottom Banner Ad" class="mx-auto">
                 </div>
             </div>
 
@@ -103,7 +90,7 @@
             <div id="earn-page" class="page p-4">
                  <!-- Top Banner Ad Slot for Earn Page -->
                 <div class="p-2 text-center bg-gray-100 mb-4">
-                    <small>Top Banner Ad</small>
+                    <img src="https://placehold.co/320x50/eee/333?text=Top+Banner+Ad" alt="Top Banner Ad" class="mx-auto">
                 </div>
                 <h2 class="text-2xl font-bold text-gray-800">Available Tasks</h2>
                 <p class="text-gray-600 mt-2">Choose a task type to start earning.</p>
@@ -125,7 +112,7 @@
                 </div>
                 <!-- Bottom Banner Ad Slot for Earn Page -->
                 <div class="p-2 text-center bg-gray-100 mt-6">
-                    <small>Bottom Banner Ad</small>
+                    <img src="https://placehold.co/320x50/eee/333?text=Bottom+Banner+Ad" alt="Bottom Banner Ad" class="mx-auto">
                 </div>
             </div>
             
@@ -133,7 +120,7 @@
             <div id="cta-task-page" class="page p-4">
                 <!-- Top Banner Ad Slot for Rules Page -->
                 <div class="p-2 text-center bg-gray-100 mb-4">
-                    <small>Top Banner Ad</small>
+                    <img src="https://placehold.co/320x50/eee/333?text=Top+Banner+Ad" alt="Top Banner Ad" class="mx-auto">
                 </div>
                 <div class="flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-gray-800">Task Rules</h2>
@@ -145,7 +132,7 @@
                 <button onclick="navigateTo('cta-network-page')" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Continue</button>
                 <!-- Bottom Banner Ad Slot for Rules Page -->
                 <div class="p-2 text-center bg-gray-100 mt-6">
-                    <small>Bottom Banner Ad</small>
+                    <img src="https://placehold.co/320x50/eee/333?text=Bottom+Banner+Ad" alt="Bottom Banner Ad" class="mx-auto">
                 </div>
             </div>
 
@@ -172,10 +159,78 @@
                 </div>
             </div>
 
-            <!-- Other pages (Ads, Withdraw, Profile) remain same for now -->
-            <div id="ads-task-page" class="page p-4"></div>
-            <div id="withdraw-page" class="page p-4"></div>
-            <div id="profile-page" class="page p-4"></div>
+            <!-- Ads Task Page -->
+            <div id="ads-task-page" class="page p-4">
+                <h2 class="text-2xl font-bold text-gray-800 mt-4">View Ads</h2>
+                <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
+                    <p class="text-gray-700">15-second ads will appear here soon!</p>
+                </div>
+            </div>
+
+            <!-- Withdraw Page -->
+            <div id="withdraw-page" class="page p-4">
+                 <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
+                 <div class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <p class="text-sm text-blue-800"><b>Note:</b> Withdrawals are processed twice a month: on the 15th-17th, and on the last 3 days of the month.</p>
+                 </div>
+                 <div class="mt-6">
+                    <label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                    <select id="withdraw-method" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <option>Bkash</option>
+                        <option>Nagad</option>
+                        <option>Rocket</option>
+                    </select>
+                 </div>
+                 <div class="mt-4">
+                    <label for="withdraw-number" class="block text-sm font-medium text-gray-700">Account Number</label>
+                    <input type="text" id="withdraw-number" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000">
+                 </div>
+                 <div class="mt-4">
+                    <label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 200 BDT)</label>
+                    <input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="200">
+                 </div>
+                 <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
+                 
+                <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
+                <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
+                    <p class="text-gray-600">Your payment history will appear here.</p>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile-page" class="page p-4">
+                <h2 class="text-2xl font-bold text-gray-800 mt-4">My Profile</h2>
+                <!-- User Stats -->
+                <div class="mt-6 grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">Total Earned</p>
+                        <p id="profile-total-earned" class="text-2xl font-bold text-green-600">BDT 0.00</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">Tasks Completed</p>
+                        <p id="profile-tasks-completed" class="text-2xl font-bold">0</p>
+                    </div>
+                </div>
+                <!-- Refer & Earn Section -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold text-gray-800">Refer & Earn</h3>
+                    <div class="mt-4 bg-gray-50 border p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">Share your referral link and earn 10 BDT for each active user!</p>
+                        <div class="mt-3 flex items-center bg-white border rounded-lg p-2">
+                            <input id="referral-link" type="text" class="flex-1 bg-transparent text-sm text-gray-700 focus:outline-none" value="Loading your link..." readonly>
+                            <button onclick="copyReferralLink()" class="ml-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-md text-xs font-semibold">Copy</button>
+                        </div>
+                        <button class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg mt-4 hover:bg-indigo-700">Share Link</button>
+                    </div>
+                </div>
+                 <!-- Referral List -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold text-gray-800">Your Referrals (<span id="profile-total-referrals">0</span>)</h3>
+                    <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
+                        <p class="text-gray-600">Your referred users' list will appear here.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -204,7 +259,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // --- Your Firebase Configuration ---
         const firebaseConfig = {
             apiKey: "AIzaSyDAVMpxqTzDCAhpIrwf-Vp4fhHcdls36yM",
             authDomain: "allinonebdapp.firebaseapp.com",
@@ -218,7 +272,6 @@
         const db = getFirestore(app);
         let currentUser = null;
 
-        // --- Navigation & State Management ---
         const pageContainer = document.getElementById('page-container');
         const navLinks = document.querySelectorAll('.nav-link');
         const backButton = document.getElementById('back-button');
@@ -226,11 +279,9 @@
 
         window.navigateTo = function(pageId) {
             const currentPageId = pageHistory[pageHistory.length - 1];
-            if (currentPageId === pageId) return; // Don't navigate to the same page
-
+            if (currentPageId === pageId) return;
             document.getElementById(currentPageId).classList.remove('active');
             document.getElementById(pageId).classList.add('active');
-            
             pageHistory.push(pageId);
             updateUI();
         }
@@ -239,7 +290,6 @@
             if (pageHistory.length > 1) {
                 const currentPageId = pageHistory.pop();
                 const previousPageId = pageHistory[pageHistory.length - 1];
-                
                 document.getElementById(currentPageId).classList.remove('active');
                 document.getElementById(previousPageId).classList.add('active');
                 updateUI();
@@ -248,11 +298,13 @@
         
         function updateUI() {
             const currentPageId = pageHistory[pageHistory.length - 1];
-
-            // Back button visibility
-            backButton.style.display = (currentPageId === 'home-page') ? 'none' : 'block';
-
-            // Update nav link active state
+            // Updated Back button visibility logic
+            if (currentPageId === 'home-page') {
+                backButton.classList.add('hidden');
+            } else {
+                backButton.classList.remove('hidden');
+            }
+            
             navLinks.forEach(link => {
                 link.classList.remove('bg-white/20');
                 if (link.getAttribute('onclick').includes(currentPageId)) {
@@ -261,26 +313,9 @@
             });
         }
 
-        // --- Language & Rules Logic ---
         const rules = {
-            en: `
-                <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                    <li>Using any kind of <b>VPN/Proxy</b> is strictly prohibited.</li>
-                    <li>Only one user can work from the same <b>Wi-Fi/IP address</b>.</li>
-                    <li>Your account will be <b>blocked</b> for violating the rules.</li>
-                    <li>You can use <b>Mobile Data</b> to work if needed.</li>
-                </ul>
-                <p class="text-sm text-gray-500 mt-2">Our system will check your IP address before starting the task.</p>
-            `,
-            bn: `
-                <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                    <li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li>
-                    <li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li>
-                    <li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li>
-                    <li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li>
-                </ul>
-                <p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>
-            `
+            en: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>Using any kind of <b>VPN/Proxy</b> is strictly prohibited.</li><li>Only one user can work from the same <b>Wi-Fi/IP address</b>.</li><li>Your account will be <b>blocked</b> for violating the rules.</li><li>You can use <b>Mobile Data</b> to work if needed.</li></ul><p class="text-sm text-gray-500 mt-2">Our system will check your IP address before starting the task.</p>`,
+            bn: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li><li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li><li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li><li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li></ul><p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>`
         };
         let currentLanguage = 'en';
         const rulesContentEl = document.getElementById('task-rules-content');
@@ -292,44 +327,43 @@
             langToggleBtn.innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
         }
 
-        // --- Task Logic ---
         window.openTaskLanding = async function(networkId) {
-            // 1. Check IP address (placeholder for backend check)
-            const isIpBlocked = await checkIpAddress(); // This is a fake check for now
-            
+            const isIpBlocked = await checkIpAddress();
             if (isIpBlocked) {
                 document.getElementById('ip-warning').style.display = 'block';
                 document.getElementById('network-a-btn').classList.add('disabled-button');
                 document.getElementById('network-b-btn').classList.add('disabled-button');
                 return;
             }
-
-            // 2. Open the external task page
             const taskUrl = `https://allinonebd.me/task-landing.html?network=${networkId}&uid=${currentUser.id}`;
             window.Telegram.WebApp.openLink(taskUrl);
         }
 
         async function checkIpAddress() {
-            // In a real app, this function would make a call to your backend server,
-            // which would then check ProxyCheck.io and your Firebase ip_logs.
-            // For now, we'll just simulate it.
             console.log("Checking IP address... (simulation)");
-            return false; // Return 'true' to test the blocked state
+            return false;
+        }
+        
+        window.copyReferralLink = function() {
+            const referralLinkInput = document.getElementById('referral-link');
+            referralLinkInput.select();
+            referralLinkInput.setSelectionRange(0, 99999); 
+            try {
+                navigator.clipboard.writeText(referralLinkInput.value);
+                alert("Referral link copied!"); 
+            } catch (err) {
+                document.execCommand('copy');
+                alert("Referral link copied!");
+            }
         }
 
-        // --- Initial Load ---
         window.addEventListener('load', async function () {
+            updateUI(); // Set initial UI state
             try {
-                rulesContentEl.innerHTML = rules[currentLanguage]; // Load initial rules text
-
-                // Fetch Notice from Firebase
+                rulesContentEl.innerHTML = rules[currentLanguage];
                 const noticeRef = doc(db, "settings", "notice");
                 const noticeSnap = await getDoc(noticeRef);
-                if (noticeSnap.exists()) {
-                    document.getElementById('notice-bar-text').innerText = noticeSnap.data().text;
-                } else {
-                     document.getElementById('notice-bar-text').innerText = "Welcome to Allinonebd! Happy Earning!";
-                }
+                document.getElementById('notice-bar-text').innerText = noticeSnap.exists() ? noticeSnap.data().text : "Welcome to Allinonebd! Happy Earning!";
 
                 const tg = window.Telegram.WebApp;
                 tg.ready(); 
@@ -340,7 +374,6 @@
                 if (user) {
                     const userId = user.id.toString();
                     const userName = user.first_name + (user.last_name ? " " + user.last_name : "");
-                    
                     const userRef = doc(db, "users", userId);
                     const docSnap = await getDoc(userRef);
 
@@ -349,16 +382,24 @@
                         document.getElementById('user-name').innerText = userData.name;
                         document.getElementById('user-balance').innerText = `BDT ${userData.balance.toFixed(2)}`;
                         document.getElementById('total-referrals').innerText = userData.referrals || 0;
+                        document.getElementById('profile-total-earned').innerText = `BDT ${userData.totalEarned || userData.balance.toFixed(2)}`;
+                        document.getElementById('profile-tasks-completed').innerText = userData.tasksCompleted || 0;
+                        document.getElementById('profile-total-referrals').innerText = userData.referrals || 0;
+                        document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
+
                     } else {
                         const newUser = {
                             name: userName,
                             balance: 0,
                             referrals: 0,
+                            totalEarned: 0,
+                            tasksCompleted: 0,
                             joinedAt: new Date()
                         };
                         await setDoc(userRef, newUser);
                         document.getElementById('user-name').innerText = newUser.name;
                         document.getElementById('user-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
+                        document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
                     }
                 } else {
                     document.getElementById('user-name').innerText = "Guest User";
