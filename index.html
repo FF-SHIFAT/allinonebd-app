@@ -363,8 +363,8 @@
             }
         }
         
-        // MODIFICATION 2: Simplified share function
-        window.shareReferralLink = function() {
+        // MODIFICATION: Using Web Share API to prevent app from closing
+        window.shareReferralLink = async function() {
             const referralLink = document.getElementById('referral-link').value;
             if (!referralLink || referralLink.includes('Loading') || referralLink.includes('Please open')) {
                 showToast("Referral link not available yet.");
@@ -372,13 +372,27 @@
             }
 
             const shareText = "Hey! Join me on Allinonebd and start earning rewards! 💰";
-            const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
+            const shareData = {
+                title: 'Join Allinonebd',
+                text: shareText,
+                url: referralLink,
+            };
 
-            if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
+            // Try to use the modern Web Share API first
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    console.log("Share cancelled or failed", err);
+                }
             } else {
-                window.open(telegramShareUrl, '_blank');
-                showToast("Opening share link in a new tab for testing.");
+                // Fallback for older devices
+                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
+                } else {
+                    window.open(telegramShareUrl, '_blank');
+                }
             }
         }
 
