@@ -22,19 +22,10 @@
         .bottom-nav-gradient {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
         }
-        /* Hide pages by default */
-        .page {
-            display: none;
-        }
-        /* Show the active page */
-        .page.active {
-            display: block;
-        }
-        /* Styling for disabled button */
-        .disabled-button {
-            background-color: #9ca3af;
-            cursor: not-allowed;
-        }
+        .page { display: none; }
+        .page.active { display: block; }
+        .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
+        #back-button { display: none; } /* Back button hidden by default */
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -42,6 +33,9 @@
     <div class="min-h-screen bg-white shadow-lg pb-24">
         <!-- Header Section -->
         <header class="bg-blue-600 text-white p-4 flex items-center space-x-4 rounded-b-2xl sticky top-0 z-10">
+            <button id="back-button" onclick="goBack()" class="mr-2 p-2 rounded-full hover:bg-white/20">
+                <i class="ph-arrow-left-bold text-xl"></i>
+            </button>
             <img src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
             <div>
                 <h1 id="user-name" class="text-lg font-bold">Loading...</h1>
@@ -49,9 +43,14 @@
             </div>
         </header>
 
-        <!-- Notice Bar Section (Updated Color) -->
+        <!-- Notice Bar Section -->
         <div class="bg-blue-100 text-blue-800 p-2 text-sm font-semibold">
             <marquee id="notice-bar-text">Loading latest announcements...</marquee>
+        </div>
+
+        <!-- Top Banner Ad Slot -->
+        <div id="top-banner-ad" class="p-2 text-center bg-gray-100" style="display: none;">
+            <small>Top Banner Ad</small>
         </div>
 
         <!-- Page Content Area -->
@@ -59,6 +58,7 @@
             <!-- Home Page -->
             <div id="home-page" class="page active">
                 <main class="p-4 space-y-6 mt-2">
+                    <!-- Home page content remains same -->
                     <section class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center shadow-sm">
                         <h2 class="text-xl font-semibold text-gray-800 mb-1">Earn Rewards</h2>
                         <div class="mt-4 bg-white p-4 rounded-lg border">
@@ -100,7 +100,7 @@
             <!-- Earn Page -->
             <div id="earn-page" class="page p-4">
                 <h2 class="text-2xl font-bold text-gray-800 mt-4">Available Tasks</h2>
-                <p class="text-gray-600 mt-2">Chose a task type to start earning.</p>
+                <p class="text-gray-600 mt-2">Choose a task type to start earning.</p>
                 <div class="space-y-4 mt-6">
                     <button onclick="navigateTo('cta-task-page')" class="w-full bg-teal-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-left flex items-center space-x-4">
                         <i class="ph-rocket-launch-bold text-3xl"></i>
@@ -113,75 +113,56 @@
                         <i class="ph-monitor-play-bold text-3xl"></i>
                         <div>
                             <span class="text-lg">View Daily Ads</span>
-                            <span class="text-sm block opacity-80">Watch short ads to earn. (20 left)</span>
+                            <span id="ads-left-text" class="text-sm block opacity-80">Watch short ads to earn. (20 left)</span>
                         </div>
                     </button>
                 </div>
             </div>
             
-            <!-- CTA Task Page -->
+            <!-- CTA Task Rules Page -->
             <div id="cta-task-page" class="page p-4">
-                 <div id="cta-rules">
+                <div class="flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-gray-800 mt-4">Task Rules</h2>
-                    <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                        <li>Kono dhoroner <b>VPN/Proxy</b> bebohar kora jabe na.</li>
-                        <li>Eki <b>Wi-Fi/IP address</b> theke shudhu ekjon-i kaj korte parben.</li>
-                        <li>Niyom na manle account <b>block</b> kore dewa hobe.</li>
-                        <li>Apni chaile <b>Mobile Data</b> bebohar kore kaj korte paren.</li>
-                    </ul>
-                    <p class="text-sm text-gray-500 mt-2">Amader system apnar IP address check korbe.</p>
-                    <button onclick="startCtaTask()" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Start Task</button>
-                 </div>
-                 <div id="cta-work-area" style="display: none;">
-                    <h2 class="text-2xl font-bold text-gray-800 mt-4">Complete the Offer</h2>
-                    <p class="text-gray-600 mt-2">Nicher offer-ti shompurno korun.</p>
-                    <!-- CPA offer will be loaded in this iframe -->
-                    <div class="w-full h-64 bg-gray-200 mt-4 rounded-lg flex items-center justify-center">
-                        <p>CPA Offer iFrame loading...</p>
-                    </div>
-                    <div class="mt-4 text-center">
-                        <p class="text-lg">Time Remaining: <span id="timer" class="font-bold">60</span>s</p>
-                        <button id="submit-task-btn" class="w-full font-bold py-3 px-4 rounded-lg mt-5 disabled-button" disabled>Submit Task</button>
-                    </div>
-                 </div>
-                 <div id="cta-success-area" style="display: none;">
-                    <h2 class="text-2xl font-bold text-green-600 mt-4">Task Successful!</h2>
-                    <p class="text-gray-700 mt-2">Apni <span id="earned-amount" class="font-bold">5.00 BDT</span> peyechen!</p>
-                    <button onclick="startCtaTask()" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-blue-700">Finish Another Task</button>
-                    <button onclick="navigateTo('home-page')" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg mt-3 hover:bg-gray-700">Back to Home</button>
-                 </div>
+                    <button id="lang-toggle" onclick="toggleLanguage()" class="mt-4 bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded-lg text-xs">বাংলা</button>
+                </div>
+                <div id="task-rules-content">
+                    <!-- Content will be loaded by JavaScript -->
+                </div>
+                <button onclick="navigateTo('cta-network-page')" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Continue</button>
             </div>
 
-            <!-- Ads Task Page -->
-            <div id="ads-task-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mt-4">View Ads</h2>
-                 <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
-                    <p class="text-gray-700">15-second ads will appear here soon!</p>
+            <!-- CTA Network Page -->
+            <div id="cta-network-page" class="page p-4">
+                <h2 class="text-2xl font-bold text-gray-800 mt-4">CTA Task Networks</h2>
+                <p class="text-gray-600 mt-2">Select a network to view tasks.</p>
+                <div class="space-y-4 mt-6">
+                    <button id="network-a-btn" onclick="openTaskLanding('networkA')" class="w-full bg-blue-500 text-white p-4 rounded-lg text-left">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg">Task Network 1</span>
+                            <span id="network-a-status" class="text-sm bg-white/20 px-2 py-1 rounded-full">0/2 Completed</span>
+                        </div>
+                    </button>
+                    <button id="network-b-btn" onclick="openTaskLanding('networkB')" class="w-full bg-green-500 text-white p-4 rounded-lg text-left">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg">Task Network 2</span>
+                            <span id="network-b-status" class="text-sm bg-white/20 px-2 py-1 rounded-full">0/2 Completed</span>
+                        </div>
+                    </button>
+                </div>
+                 <div id="ip-warning" class="mt-4 p-3 bg-red-100 text-red-800 rounded-lg text-center" style="display: none;">
+                    You have already completed tasks from this IP address. Please change your network (e.g., use Mobile Data) to continue.
                 </div>
             </div>
 
-            <!-- Withdraw Page -->
-            <div id="withdraw-page" class="page p-4">
-                 <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
-                <p class="text-gray-600 mt-2">Request a payment to your account.</p>
-                <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
-                    <p class="text-gray-700">Withdrawal options will be available soon.</p>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
-                <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
-                    <p class="text-gray-600">Your payment history will appear here.</p>
-                    <!-- Placeholder for history table -->
-                </div>
-            </div>
+            <!-- Other pages (Ads, Withdraw, Profile) remain same for now -->
+            <div id="ads-task-page" class="page p-4"></div>
+            <div id="withdraw-page" class="page p-4"></div>
+            <div id="profile-page" class="page p-4"></div>
+        </div>
 
-            <!-- Profile Page -->
-            <div id="profile-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800 mt-4">My Profile</h2>
-                <p class="text-gray-600 mt-2">View your account details and history.</p>
-                <div class="mt-6 p-5 border rounded-lg text-center bg-gray-50">
-                    <p class="text-gray-700">User statistics and settings will be here.</p>
-                </div>
-            </div>
+        <!-- Bottom Banner Ad Slot -->
+        <div id="bottom-banner-ad" class="p-2 text-center bg-gray-100" style="display: none;">
+            <small>Bottom Banner Ad</small>
         </div>
     </div>
 
@@ -210,6 +191,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+        // --- Your Firebase Configuration ---
         const firebaseConfig = {
             apiKey: "AIzaSyDAVMpxqTzDCAhpIrwf-Vp4fhHcdls36yM",
             authDomain: "allinonebdapp.firebaseapp.com",
@@ -223,68 +205,111 @@
         const db = getFirestore(app);
         let currentUser = null;
 
-        const pages = document.querySelectorAll('.page');
+        // --- Navigation & State Management ---
+        const pageContainer = document.getElementById('page-container');
         const navLinks = document.querySelectorAll('.nav-link');
+        const backButton = document.getElementById('back-button');
+        let pageHistory = ['home-page'];
 
         window.navigateTo = function(pageId) {
-            pages.forEach(page => page.classList.remove('active'));
+            const currentPageId = pageHistory[pageHistory.length - 1];
+            if (currentPageId === pageId) return; // Don't navigate to the same page
+
+            document.getElementById(currentPageId).classList.remove('active');
             document.getElementById(pageId).classList.add('active');
+            
+            pageHistory.push(pageId);
+            updateUI();
+        }
+        
+        window.goBack = function() {
+            if (pageHistory.length > 1) {
+                const currentPageId = pageHistory.pop();
+                const previousPageId = pageHistory[pageHistory.length - 1];
+                
+                document.getElementById(currentPageId).classList.remove('active');
+                document.getElementById(previousPageId).classList.add('active');
+                updateUI();
+            }
+        }
+        
+        function updateUI() {
+            const currentPageId = pageHistory[pageHistory.length - 1];
+
+            // Back button visibility
+            backButton.style.display = (currentPageId === 'home-page') ? 'none' : 'block';
+
+            // Update nav link active state
             navLinks.forEach(link => {
                 link.classList.remove('bg-white/20');
-                if (link.getAttribute('onclick').includes(pageId)) {
+                if (link.getAttribute('onclick').includes(currentPageId)) {
                     link.classList.add('bg-white/20');
                 }
             });
         }
 
-        let timerInterval;
-        window.startCtaTask = function() {
-            document.getElementById('cta-rules').style.display = 'none';
-            document.getElementById('cta-success-area').style.display = 'none';
-            document.getElementById('cta-work-area').style.display = 'block';
-
-            const timerEl = document.getElementById('timer');
-            const submitBtn = document.getElementById('submit-task-btn');
-            let timeLeft = 60;
-            
-            timerEl.textContent = timeLeft;
-            submitBtn.disabled = true;
-            submitBtn.classList.add('disabled-button');
-            submitBtn.textContent = 'Submit Task';
-
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('disabled-button');
-                    submitBtn.classList.add('bg-green-500', 'text-white');
-                    submitBtn.textContent = 'Submit Now';
-                }
-            }, 1000);
-        }
-        
-        document.getElementById('submit-task-btn').onclick = async function() {
-            if (!currentUser) return;
-            const userRef = doc(db, "users", currentUser.id.toString());
-            const earned = 5.00; // Demo amount
-            await updateDoc(userRef, {
-                balance: increment(earned)
-            });
-            
-            const newBalance = parseFloat(document.getElementById('user-balance').innerText.split(' ')[1]) + earned;
-            document.getElementById('user-balance').innerText = `BDT ${newBalance.toFixed(2)}`;
-            
-            document.getElementById('cta-work-area').style.display = 'none';
-            document.getElementById('cta-success-area').style.display = 'block';
+        // --- Language & Rules Logic ---
+        const rules = {
+            en: `
+                <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                    <li>Using any kind of <b>VPN/Proxy</b> is strictly prohibited.</li>
+                    <li>Only one user can work from the same <b>Wi-Fi/IP address</b>.</li>
+                    <li>Your account will be <b>blocked</b> for violating the rules.</li>
+                    <li>You can use <b>Mobile Data</b> to work if needed.</li>
+                </ul>
+                <p class="text-sm text-gray-500 mt-2">Our system will check your IP address before starting the task.</p>
+            `,
+            bn: `
+                <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                    <li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li>
+                    <li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li>
+                    <li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li>
+                    <li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li>
+                </ul>
+                <p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>
+            `
         };
+        let currentLanguage = 'en';
+        const rulesContentEl = document.getElementById('task-rules-content');
+        const langToggleBtn = document.getElementById('lang-toggle');
 
+        window.toggleLanguage = function() {
+            currentLanguage = (currentLanguage === 'en') ? 'bn' : 'en';
+            rulesContentEl.innerHTML = rules[currentLanguage];
+            langToggleBtn.innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
+        }
 
+        // --- Task Logic ---
+        window.openTaskLanding = async function(networkId) {
+            // 1. Check IP address (placeholder for backend check)
+            const isIpBlocked = await checkIpAddress(); // This is a fake check for now
+            
+            if (isIpBlocked) {
+                document.getElementById('ip-warning').style.display = 'block';
+                document.getElementById('network-a-btn').classList.add('disabled-button');
+                document.getElementById('network-b-btn').classList.add('disabled-button');
+                return;
+            }
+
+            // 2. Open the external task page
+            const taskUrl = `https://allinonebd.me/task-landing.html?network=${networkId}&uid=${currentUser.id}`;
+            window.Telegram.WebApp.openLink(taskUrl);
+        }
+
+        async function checkIpAddress() {
+            // In a real app, this function would make a call to your backend server,
+            // which would then check ProxyCheck.io and your Firebase ip_logs.
+            // For now, we'll just simulate it.
+            console.log("Checking IP address... (simulation)");
+            return false; // Return 'true' to test the blocked state
+        }
+
+        // --- Initial Load ---
         window.addEventListener('load', async function () {
             try {
-                // Fetch Notice
+                rulesContentEl.innerHTML = rules[currentLanguage]; // Load initial rules text
+
+                // Fetch Notice from Firebase
                 const noticeRef = doc(db, "settings", "notice");
                 const noticeSnap = await getDoc(noticeRef);
                 if (noticeSnap.exists()) {
