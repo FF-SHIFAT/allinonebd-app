@@ -21,7 +21,6 @@
         .page { display: none; }
         .page.active { display: block; }
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
-        /* Custom toast for notifications */
         #toast {
             position: fixed;
             bottom: 80px;
@@ -42,8 +41,8 @@
 
     <div class="min-h-screen bg-white shadow-lg pb-24">
         <header class="bg-blue-600 text-white p-4 flex items-center space-x-3 rounded-b-2xl sticky top-0 z-10">
-            <button id="back-button" onclick="goBack()" class="hidden w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-blue-700 hover:bg-blue-800 transition-colors">
-                <i class="ph-arrow-left-bold text-2xl text-white"></i>
+            <button id="back-button" onclick="goBack()" class="px-3 py-1 text-sm font-semibold flex-shrink-0 flex items-center justify-center rounded-md bg-blue-700 hover:bg-blue-800 transition-colors">
+                Back
             </button>
             <img id="user-avatar" src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
             <div>
@@ -198,10 +197,10 @@
                  </div>
                  <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
                 
-                <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
-                <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
+                 <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
+                 <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
                     <p class="text-gray-600">Your payment history will appear here.</p>
-                </div>
+                 </div>
             </div>
 
             <div id="profile-page" class="page p-4">
@@ -282,7 +281,6 @@
         const db = getFirestore(app);
         let currentUser = null;
 
-        const backButton = document.getElementById('back-button');
         let pageHistory = ['home-page'];
 
         window.navigateTo = function(pageId) {
@@ -305,8 +303,15 @@
         }
         
         function updateUI() {
+            const backButton = document.getElementById('back-button');
+            if (!backButton) return;
+
             const currentPageId = pageHistory[pageHistory.length - 1];
-            backButton.classList.toggle('hidden', currentPageId === 'home-page');
+            if (currentPageId === 'home-page') {
+                backButton.style.display = 'none';
+            } else {
+                backButton.style.display = 'flex';
+            }
             
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('bg-white/20');
@@ -345,7 +350,7 @@
         window.copyReferralLink = function() {
             const referralLinkInput = document.getElementById('referral-link');
             referralLinkInput.select();
-            referralLinkInput.setSelectionRange(0, 99999); // For mobile devices
+            referralLinkInput.setSelectionRange(0, 99999);
             try {
                 var successful = document.execCommand('copy');
                 if (successful) {
@@ -358,7 +363,8 @@
             }
         }
         
-        window.shareReferralLink = async function() {
+        // MODIFICATION 2: Simplified share function
+        window.shareReferralLink = function() {
             const referralLink = document.getElementById('referral-link').value;
             if (!referralLink || referralLink.includes('Loading') || referralLink.includes('Please open')) {
                 showToast("Referral link not available yet.");
@@ -366,25 +372,13 @@
             }
 
             const shareText = "Hey! Join me on Allinonebd and start earning rewards! 💰";
-            const shareData = {
-                title: 'Join Allinonebd',
-                text: shareText,
-                url: referralLink,
-            };
+            const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
 
-            if (navigator.share) {
-                try {
-                    await navigator.share(shareData);
-                } catch (err) {
-                    console.log("Share cancelled or failed", err);
-                }
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
             } else {
-                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
-                if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
-                } else {
-                    window.open(telegramShareUrl, '_blank');
-                }
+                window.open(telegramShareUrl, '_blank');
+                showToast("Opening share link in a new tab for testing.");
             }
         }
 
@@ -396,7 +390,7 @@
             if (method === 'payoneer') {
                 label.textContent = 'Payoneer Email';
                 input.placeholder = 'Enter your Payoneer email';
-            } else { // bkash, nagad, rocket
+            } else { 
                 label.textContent = 'Account Number';
                 input.placeholder = 'e.g., 01700000000';
             }
@@ -455,7 +449,7 @@
                     document.getElementById('profile-total-earned').innerText = `BDT ${(userData.totalEarned || userData.balance).toFixed(2)}`;
                     document.getElementById('profile-ads-watched').innerText = userData.adsWatched || 0;
                     document.getElementById('profile-total-referrals').innerText = userData.referrals || 0;
-                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
+                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; 
 
                 } else {
                     const newUser = {
@@ -473,7 +467,7 @@
                     document.getElementById('profile-name').innerText = newUser.name;
                     document.getElementById('profile-username').innerText = newUser.username ? `@${newUser.username}` : 'N/A';
                     document.getElementById('profile-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
-                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; // Replace YourBotName
+                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`;
                 }
             } catch (error) {
                 console.error("Error during initialization: ", error);
