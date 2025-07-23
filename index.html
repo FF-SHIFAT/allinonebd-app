@@ -180,20 +180,20 @@
                  <div class="mt-6 space-y-4">
                     <div>
                         <label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label>
-                        <select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                             <option value="bkash">Bkash</option>
                             <option value="nagad">Nagad</option>
                             <option value="rocket">Rocket</option>
                             <option value="payoneer">Payoneer</option>
-                        </select>
+                            </select>
                     </div>
                     <div>
                         <label id="withdraw-address-label" for="withdraw-address" class="block text-sm font-medium text-gray-700">Account Number</label>
-                        <input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000">
+                        <input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000">
                     </div>
                     <div>
-                        <label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 2000 BDT)</label>
-                        <input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="2000">
+                        <label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 200 BDT)</label>
+                        <input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2" placeholder="200">
                     </div>
                  </div>
                  <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
@@ -358,6 +358,7 @@
             }
         }
         
+        // MODIFICATION: Updated the share function to prevent the app from closing.
         window.shareReferralLink = async function() {
             const referralLink = document.getElementById('referral-link').value;
             if (!referralLink || referralLink.includes('Loading') || referralLink.includes('Please open')) {
@@ -372,13 +373,17 @@
                 url: referralLink,
             };
 
+            // Use Web Share API if supported (keeps the app open)
             if (navigator.share) {
                 try {
                     await navigator.share(shareData);
                 } catch (err) {
+                    // This error can happen if the user cancels the share.
+                    // We can ignore it.
                     console.log("Share cancelled or failed", err);
                 }
             } else {
+                // Fallback for older devices: Use the old method that closes the app.
                 const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
