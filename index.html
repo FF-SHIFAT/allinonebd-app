@@ -135,28 +135,13 @@
                     <button id="lang-toggle" onclick="toggleLanguage()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded-lg text-xs">বাংলা</button>
                 </div>
                 <div id="task-rules-content"></div>
-                <button onclick="navigateTo('cta-network-page')" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Continue</button>
+                <!-- MODIFICATION: Button action changed -->
+                <button onclick="redirectToTaskPage()" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-green-700 transition duration-300">I Understand, Continue</button>
             </div>
 
+            <!-- This page is now obsolete as we are redirecting to task.allinonebd.me -->
             <div id="cta-network-page" class="page p-4">
-                <h2 class="text-2xl font-bold text-gray-800">CTA Task Networks</h2>
-                <div class="space-y-4 mt-6">
-                    <button id="network-a-btn" onclick="openTaskLanding('networkA')" class="w-full bg-blue-500 text-white p-4 rounded-lg text-left">
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-lg">Task Network 1</span>
-                            <span id="network-a-status" class="text-sm bg-white/20 px-2 py-1 rounded-full">0/2 Completed</span>
-                        </div>
-                    </button>
-                    <button id="network-b-btn" onclick="openTaskLanding('networkB')" class="w-full bg-green-500 text-white p-4 rounded-lg text-left">
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-lg">Task Network 2</span>
-                            <span id="network-b-status" class="text-sm bg-white/20 px-2 py-1 rounded-full">0/2 Completed</span>
-                        </div>
-                    </button>
-                </div>
-                 <div id="ip-warning" class="mt-4 p-3 bg-red-100 text-red-800 rounded-lg text-center" style="display: none;">
-                    You have already completed tasks from this IP address. Please change your network (e.g., use Mobile Data) to continue.
-                </div>
+                <!-- Content removed -->
             </div>
 
             <div id="ads-task-page" class="page p-4">
@@ -342,7 +327,6 @@
         };
         let currentLanguage = 'en';
 
-        // MODIFICATION: Added language content for referral note
         const referralNoteLanguages = {
             en: `
                 <p>You will receive a <b>10 BDT</b> bonus when your referred friend meets the following conditions:</p>
@@ -369,7 +353,6 @@
             document.getElementById('lang-toggle').innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
         }
 
-        // MODIFICATION: Added new function to toggle referral note language
         window.toggleReferralNoteLanguage = function() {
             currentReferralNoteLang = (currentReferralNoteLang === 'en') ? 'bn' : 'en';
             document.getElementById('referral-note-content').innerHTML = referralNoteLanguages[currentReferralNoteLang];
@@ -377,9 +360,15 @@
             toggleButton.innerText = (currentReferralNoteLang === 'en') ? 'বাংলা' : 'English';
         }
 
-        window.openTaskLanding = async function(networkId) {
-            const taskUrl = `https://allinonebd.me/task-landing.html?network=${networkId}&uid=${currentUser.id}`;
-            window.Telegram.WebApp.openLink(taskUrl);
+        // MODIFICATION: New function to redirect to the task subdomain
+        window.redirectToTaskPage = function() {
+            if (!currentUser || !currentUser.id) {
+                showToast("User information not found. Please restart the app.");
+                return;
+            }
+            // This is the correct URL for the new task landing page
+            const taskPageUrl = `https://task.allinonebd.me?userId=${currentUser.id}`;
+            window.Telegram.WebApp.openLink(taskPageUrl);
         }
 
         function showToast(message) {
@@ -506,7 +495,7 @@
                     document.getElementById('profile-total-earned').innerText = `BDT ${(userData.totalEarned || userData.balance).toFixed(2)}`;
                     document.getElementById('profile-ads-watched').innerText = userData.adsWatched || 0;
                     document.getElementById('profile-total-referrals').innerText = userData.referrals || 0;
-                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`; 
+                    document.getElementById('referral-link').value = `https://t.me/Allinonebdrealbot?start=${userId}`; 
 
                 } else {
                     const newUser = {
@@ -526,7 +515,7 @@
                     document.getElementById('profile-username').innerText = newUser.username ? `@${newUser.username}` : 'N/A';
                     document.getElementById('profile-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
                     document.getElementById('profile-pending-balance').innerText = `BDT ${newUser.pendingReferralBalance.toFixed(2)}`;
-                    document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`;
+                    document.getElementById('referral-link').value = `https://t.me/Allinonebdrealbot?start=${userId}`;
                 }
             } catch (error) {
                 console.error("Error during initialization: ", error);
