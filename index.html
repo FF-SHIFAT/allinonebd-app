@@ -41,7 +41,7 @@
 
     <div class="min-h-screen bg-white shadow-lg pb-24">
         <header class="bg-blue-600 text-white p-4 flex items-center space-x-3 rounded-b-2xl sticky top-0 z-10">
-            <button id="back-button" onclick="goBack()" class="hidden px-3 py-1 text-sm font-semibold flex-shrink-0 flex items-center justify-center rounded-md bg-blue-700 hover:bg-blue-800 transition-colors">
+            <button id="back-button" class="px-3 py-1 text-sm font-semibold flex-shrink-0 flex items-center justify-center rounded-md bg-blue-700 hover:bg-blue-800 transition-colors">
                 Back
             </button>
             <img id="user-avatar" src="https://placehold.co/50x50/ffffff/333333?text=U" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-white">
@@ -197,10 +197,10 @@
                  </div>
                  <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
                 
-                <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
-                <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
+                 <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
+                 <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center">
                     <p class="text-gray-600">Your payment history will appear here.</p>
-                </div>
+                 </div>
             </div>
 
             <div id="profile-page" class="page p-4">
@@ -210,7 +210,6 @@
                     <p id="profile-username" class="text-gray-500">@username</p>
                     <div class="mt-2">
                         <p class="text-lg font-semibold text-green-600">Balance: <span id="profile-balance">BDT 0.00</span></p>
-                        <!-- MODIFICATION: Added Pending Balance -->
                         <p class="text-sm font-medium text-yellow-600">Pending Balance: <span id="profile-pending-balance">BDT 0.00</span></p>
                     </div>
                 </div>
@@ -229,9 +228,19 @@
                 <div class="mt-8">
                     <h3 class="text-xl font-bold text-gray-800">Refer & Earn</h3>
                     <div class="mt-4 bg-gray-50 border p-4 rounded-lg">
-                        <!-- MODIFICATION: Added Referral conditions notice -->
-                        <p class="text-xs text-gray-500 mb-2"><b>Note:</b> Referral bonus will be added to your main balance after your friend completes the required tasks.</p>
-                        <p class="text-sm text-gray-600">Share your referral link and earn 10 BDT for each active user!</p>
+                        <div class="flex justify-between items-start mb-3">
+                            <div id="referral-note-content" class="text-left text-sm text-gray-700">
+                                <p>You will receive a <b>10 BDT</b> bonus when your referred friend meets the following conditions:</p>
+                                <ul class="list-disc list-inside mt-1">
+                                    <li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li>
+                                    <li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li>
+                                </ul>
+                                <p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p>
+                            </div>
+                            <button id="referral-lang-toggle" onclick="toggleReferralNoteLanguage()" class="bg-gray-200 text-gray-800 font-semibold py-1 px-2 rounded-lg text-xs ml-2 flex-shrink-0">
+                                বাংলা
+                            </button>
+                        </div>
                         <div class="mt-3 flex items-center bg-white border rounded-lg p-2">
                             <input id="referral-link" type="text" class="flex-1 bg-transparent text-sm text-gray-700 focus:outline-none" value="Loading your link..." readonly>
                             <button onclick="copyReferralLink()" class="ml-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-md text-xs font-semibold">Copy</button>
@@ -333,10 +342,39 @@
         };
         let currentLanguage = 'en';
 
+        // MODIFICATION: Added language content for referral note
+        const referralNoteLanguages = {
+            en: `
+                <p>You will receive a <b>10 BDT</b> bonus when your referred friend meets the following conditions:</p>
+                <ul class="list-disc list-inside mt-1">
+                    <li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li>
+                    <li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li>
+                </ul>
+                <p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p>
+            `,
+            bn: `
+                <p>আপনার রেফার করা বন্ধু নিচের শর্তগুলো পূরণ করলে আপনি <b>10 BDT</b> বোনাস পাবেন:</p>
+                <ul class="list-disc list-inside mt-1">
+                    <li><span class="text-red-600 font-bold">ন্যূনতম ৭ দিন সম্পূর্ণ কাজ করতে হবে।</span></li>
+                    <li><span class="text-red-600 font-bold">এক মাসের মধ্যে কমপক্ষে ১৫ দিন সক্রিয়ভাবে কাজ করতে হবে।</span></li>
+                </ul>
+                <p class="text-xs text-gray-500 mt-2">শর্ত পূরণ না হওয়া পর্যন্ত বোনাসটি আপনার Pending Balance-এ থাকবে।</p>
+            `
+        };
+        let currentReferralNoteLang = 'en';
+
         window.toggleLanguage = function() {
             currentLanguage = (currentLanguage === 'en') ? 'bn' : 'en';
             document.getElementById('task-rules-content').innerHTML = rules[currentLanguage];
             document.getElementById('lang-toggle').innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
+        }
+
+        // MODIFICATION: Added new function to toggle referral note language
+        window.toggleReferralNoteLanguage = function() {
+            currentReferralNoteLang = (currentReferralNoteLang === 'en') ? 'bn' : 'en';
+            document.getElementById('referral-note-content').innerHTML = referralNoteLanguages[currentReferralNoteLang];
+            const toggleButton = document.getElementById('referral-lang-toggle');
+            toggleButton.innerText = (currentReferralNoteLang === 'en') ? 'বাংলা' : 'English';
         }
 
         window.openTaskLanding = async function(networkId) {
@@ -436,6 +474,7 @@
                     document.getElementById('profile-name').innerText = "Guest User";
                     document.getElementById('profile-username').innerText = "@guest";
                     document.getElementById('profile-balance').innerText = "BDT 0.00";
+                    document.getElementById('profile-pending-balance').innerText = "BDT 0.00";
                     document.getElementById('referral-link').value = "Please open in Telegram to get your link.";
                     console.log("Running outside of Telegram or user data not found.");
                     return; 
@@ -463,7 +502,6 @@
                     document.getElementById('profile-name').innerText = userData.name;
                     document.getElementById('profile-username').innerText = user.username ? `@${user.username}` : 'N/A';
                     document.getElementById('profile-balance').innerText = `BDT ${userData.balance.toFixed(2)}`;
-                    // MODIFICATION: Display pending balance
                     document.getElementById('profile-pending-balance').innerText = `BDT ${(userData.pendingReferralBalance || 0).toFixed(2)}`;
                     document.getElementById('profile-total-earned').innerText = `BDT ${(userData.totalEarned || userData.balance).toFixed(2)}`;
                     document.getElementById('profile-ads-watched').innerText = userData.adsWatched || 0;
@@ -475,12 +513,11 @@
                         name: userName,
                         username: user.username || null,
                         balance: 0,
+                        pendingReferralBalance: 0,
                         referrals: 0,
                         totalEarned: 0,
                         adsWatched: 0,
-                        joinedAt: new Date(),
-                        // MODIFICATION: Add pending balance for new user
-                        pendingReferralBalance: 0 
+                        joinedAt: new Date()
                     };
                     await setDoc(userRef, newUser);
                     document.getElementById('user-name').innerText = newUser.name;
@@ -488,7 +525,6 @@
                     document.getElementById('profile-name').innerText = newUser.name;
                     document.getElementById('profile-username').innerText = newUser.username ? `@${newUser.username}` : 'N/A';
                     document.getElementById('profile-balance').innerText = `BDT ${newUser.balance.toFixed(2)}`;
-                    // MODIFICATION: Display pending balance for new user
                     document.getElementById('profile-pending-balance').innerText = `BDT ${newUser.pendingReferralBalance.toFixed(2)}`;
                     document.getElementById('referral-link').value = `https://t.me/YourBotName?start=${userId}`;
                 }
