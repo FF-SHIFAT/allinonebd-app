@@ -221,18 +221,15 @@
             const adScript = document.createElement('script');
             adScript.innerHTML = getInterstitialAdScript();
             
-            // ★★★ নতুন লজিক শুরু ★★★
-            // বিজ্ঞাপন লোড হওয়ার জন্য অপেক্ষা করা হবে
             let adLoaded = false;
             const observer = new MutationObserver((mutationsList, observer) => {
                 for(const mutation of mutationsList) {
                     if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                        // যখনই adContentBox-এর ভেতরে কোনো কিছু (যেমন iframe) যোগ হবে
-                        const adElement = adContentBox.querySelector('iframe, div[class*="ad"]');
+                        const adElement = adContentBox.querySelector('iframe, div[id*="ad"], div[class*="ad"]');
                         if (adElement) {
                             adLoaded = true;
-                            startTimer(); // টাইমার চালু করার ফাংশন কল করা হবে
-                            observer.disconnect(); // একবার বিজ্ঞাপন লোড হলে আর চেক করার দরকার নেই
+                            startTimer(); 
+                            observer.disconnect(); 
                             break;
                         }
                     }
@@ -240,10 +237,8 @@
             });
             observer.observe(adContentBox, { childList: true, subtree: true });
 
-            // এখন স্ক্রিপ্ট যোগ করা হচ্ছে
             adContentBox.appendChild(adScript);
 
-            // যদি ৫ সেকেন্ডের মধ্যে কোনো বিজ্ঞাপন লোড না হয়
             setTimeout(() => {
                 if (!adLoaded) {
                     observer.disconnect();
@@ -344,7 +339,6 @@
                 updateAllUIElements();
             }
         };
-
         function updateAdsCountUI() {
              if (!userData) return;
              const today = new Date().toISOString().slice(0, 10);
@@ -363,7 +357,6 @@
                 }
              }
         };
-
         function updateAllUIElements() {
             if (!userData) return;
             const balanceText = `BDT ${userData.balance.toFixed(2)}`;
@@ -374,7 +367,6 @@
             document.getElementById('profile-ads-watched').innerText = totalAdsWatched;
             updateAdsCountUI();
         };
-
         window.addEventListener('load', async function () {
             updateUI();
             try {
@@ -420,7 +412,6 @@
             document.getElementById('task-rules-content').innerHTML = rules['en'];
             document.getElementById('referral-note-content').innerHTML = referralNoteLanguages['en'];
         });
-
         window.copyReferralLink = function() {
             const referralLinkInput = document.getElementById('referral-link');
             referralLinkInput.select();
@@ -431,7 +422,6 @@
                 else { showToast("Copy failed. Please copy manually."); }
             } catch (err) { showToast("Copy failed. Please copy manually."); }
         };
-
         window.shareReferralLink = async function() {
             const referralLink = document.getElementById('referral-link').value;
             if (!referralLink || referralLink.includes('Loading')) {
@@ -455,7 +445,6 @@
                 }
             }
         };
-
         const referralNoteLanguages = {
             en: `<p>You will receive a <b>10 BDT</b> bonus when your referred friend meets the following conditions:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li><li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li></ul><p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p>`,
             bn: `<p>আপনার রেফার করা বন্ধু নিচের শর্তগুলো পূরণ করলে আপনি <b>10 BDT</b> বোনাস পাবেন:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">ন্যূনতম ৭ দিন সম্পূর্ণ কাজ করতে হবে।</span></li><li><span class="text-red-600 font-bold">এক মাসের মধ্যে কমপক্ষে ১৫ দিন সক্রিয়ভাবে কাজ করতে হবে।</span></li></ul><p class="text-xs text-gray-500 mt-2">শর্ত পূরণ না হওয়া পর্যন্ত বোনাসটি আপনার Pending Balance-এ থাকবে।</p>`
@@ -467,7 +456,6 @@
             const toggleButton = document.getElementById('referral-lang-toggle');
             toggleButton.innerText = (currentReferralNoteLang === 'en') ? 'বাংলা' : 'English';
         };
-
         const rules = {
             en: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>Using any kind of <b>VPN/Proxy</b> is strictly prohibited.</li><li>Only one user can work from the same <b>Wi-Fi/IP address</b>.</li><li>Your account will be <b>blocked</b> for violating the rules.</li><li>You can use <b>Mobile Data</b> to work if needed.</li></ul><p class="text-sm text-gray-500 mt-2">Our system will check your IP address before starting the task.</p>`,
             bn: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li><li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li><li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li><li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li></ul><p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>`
@@ -478,7 +466,6 @@
             document.getElementById('task-rules-content').innerHTML = rules[currentLanguage];
             document.getElementById('lang-toggle').innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
         };
-
         window.updateWithdrawUI = function() {
             const method = document.getElementById('withdraw-method').value;
             const label = document.getElementById('withdraw-address-label');
