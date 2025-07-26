@@ -137,13 +137,9 @@
                     <p class="text-sm font-semibold text-gray-700">Advertisement</p>
                     <div id="ad-timer-container" class="bg-gray-200 text-gray-800 text-xs font-bold px-3 py-1 rounded-full">Time left: <span id="ad-timer">15</span>s</div>
                 </div>
-                <div id="top-banner-ad-container" class="mb-4 text-center h-[50px] flex items-center justify-center bg-gray-100 rounded">
-                    <script data-cfasync="false" type="text/javascript" src="//offfurreton.com/400/9628608"></script>
-                </div>
+                <div id="top-banner-ad-container" class="mb-4 text-center h-[50px] flex items-center justify-center bg-gray-100 rounded"></div>
             </div>
-            <div id="main-ad-content" class="flex-grow bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 overflow-hidden">
-                <script data-cfasync="false" type="text/javascript" src="//offfurreton.com/400/9628607"></script>
-            </div>
+            <div id="main-ad-content" class="flex-grow bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 overflow-hidden"></div>
         </div>
     </div>
     <div id="toast"></div>
@@ -170,17 +166,49 @@
         let userRef = null;
         let userData = null;
 
-        // --- Navigation Logic (Your code is correct here) ---
+        // --- Navigation Logic ---
         let pageHistory = ['home-page'];
-        window.navigateTo = function(pageId) { /* Your code here */ };
-        window.goBack = function() { /* Your code here */ };
-        function updateUI() { /* Your code here */ };
-        
-        // --- Toast Notification (Your code is correct here) ---
-        function showToast(message) { /* Your code here */ };
+        window.navigateTo = function(pageId) {
+            const currentPageId = pageHistory[pageHistory.length - 1];
+            if (currentPageId === pageId) return;
+            document.getElementById(currentPageId).classList.remove('active');
+            document.getElementById(pageId).classList.add('active');
+            pageHistory.push(pageId);
+            updateUI();
+        }
+        window.goBack = function() {
+            if (pageHistory.length > 1) {
+                const currentPageId = pageHistory.pop();
+                const previousPageId = pageHistory[pageHistory.length - 1];
+                document.getElementById(currentPageId).classList.remove('active');
+                document.getElementById(previousPageId).classList.add('active');
+                updateUI();
+            }
+        }
+        function updateUI() {
+            const backButton = document.getElementById('back-button');
+            if (!backButton) return;
+            const currentPageId = pageHistory[pageHistory.length - 1];
+            backButton.style.display = (currentPageId === 'home-page') ? 'none' : 'flex';
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('bg-white/20');
+                if (link.getAttribute('onclick').includes(currentPageId)) {
+                    link.classList.add('bg-white/20');
+                }
+            });
+            if (userData) {
+                updateAdsCountUI();
+            }
+        }
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.opacity = 1;
+            setTimeout(() => { toast.style.opacity = 0; }, 2000);
+        }
 
         // ==================================================================
-        // ★★★ Ad Viewing Logic (Corrected & Final) ★★★
+        // ★★★ Ad Viewing Logic (Final Corrected Version) ★★★
         // ==================================================================
         const AD_REWARD = 0.10;
         const DAILY_AD_LIMIT = 30;
@@ -188,6 +216,7 @@
 
         window.startAdView = function() {
             if (adTimerInterval) clearInterval(adTimerInterval);
+
             const adViewContainer = document.getElementById('ad-view-container');
             const mainAppContainer = document.getElementById('main-app-container');
             const adTimerContainer = document.getElementById('ad-timer-container');
@@ -195,17 +224,38 @@
             const mainAdContent = document.getElementById('main-ad-content');
             const topBannerAdContainer = document.getElementById('top-banner-ad-container');
 
+            // 1. আগের বিজ্ঞাপন সরিয়ে ফেলা হচ্ছে
+            mainAdContent.innerHTML = '';
+            topBannerAdContainer.innerHTML = '';
+
+            // 2. অ্যাড দেখানোর পেজটি চালু করা হচ্ছে
             mainAppContainer.style.display = 'none';
             adViewContainer.style.display = 'flex';
             adCloseButton.classList.add('hidden');
             adTimerContainer.innerHTML = `Time left: <span id="ad-timer">15</span>s`;
+
+            // 3. নতুন করে বিজ্ঞাপন কোড (Script) তৈরি করে সঠিক জায়গায় যোগ করা হচ্ছে
+            // টপ ব্যানারের বিজ্ঞাপন
+            const topAdScript = document.createElement('script');
+            topAdScript.setAttribute('data-cfasync', 'false');
+            topAdScript.setAttribute('type', 'text/javascript');
+            topAdScript.setAttribute('src', '//offfurreton.com/400/9628608'); // আপনার টপ ব্যানার Zone ID
+            topBannerAdContainer.appendChild(topAdScript);
+
+            // প্রধান বিজ্ঞাপন
+            const mainAdScript = document.createElement('script');
+            mainAdScript.setAttribute('data-cfasync', 'false');
+            mainAdScript.setAttribute('type', 'text/javascript');
+            mainAdScript.setAttribute('src', '//offfurreton.com/400/9628607'); // আপনার প্রধান বিজ্ঞাপন Zone ID
+            mainAdContent.appendChild(mainAdScript);
             
+            // 4. ৩ সেকেন্ড পর চেক করা হচ্ছে বিজ্ঞাপন লোড হয়েছে কিনা
             setTimeout(() => {
-                // Check if any ad has loaded in either container
-                const isMainAdLoaded = mainAdContent.querySelector('iframe') || mainAdContent.querySelector('ins');
-                const isTopAdLoaded = topBannerAdContainer.querySelector('iframe') || topBannerAdContainer.querySelector('ins');
+                const isMainAdLoaded = mainAdContent.querySelector('iframe, ins, div[id*="ad"], div[class*="ad"]');
+                const isTopAdLoaded = topBannerAdContainer.querySelector('iframe, ins, div[id*="ad"], div[class*="ad"]');
 
                 if (isMainAdLoaded || isTopAdLoaded) {
+                    // যদি লোড হয়, টাইমার চালু হবে
                     let timeLeft = 15;
                     const adTimerDisplay = document.getElementById('ad-timer');
                     if(adTimerDisplay) adTimerDisplay.textContent = timeLeft;
@@ -221,11 +271,12 @@
                         }
                     }, 1000);
                 } else {
+                    // যদি লোড না হয়, এরর মেসেজ দেখাবে
                     showToast("Ad failed to load. Please try again later.");
                     adViewContainer.style.display = 'none';
                     mainAppContainer.style.display = 'block';
                 }
-            }, 3000); // 3-second delay to allow ads to load
+            }, 3000); // ৩ সেকেন্ড অপেক্ষা করবে
         }
 
         window.claimAdReward = async function() {
@@ -233,14 +284,12 @@
             if (adTimerInterval) clearInterval(adTimerInterval);
             const adViewContainer = document.getElementById('ad-view-container');
             const mainAppContainer = document.getElementById('main-app-container');
-            
             if (!userRef) {
                 showToast("Error: User not found. Cannot add reward.");
                 adViewContainer.style.display = 'none';
                 mainAppContainer.style.display = 'block';
                 return;
             }
-
             try {
                 await runTransaction(db, async (transaction) => {
                     const userDoc = await transaction.get(userRef);
@@ -249,7 +298,6 @@
                     const today = new Date().toISOString().slice(0, 10);
                     const adsWatchedData = data.adsWatched || {};
                     const adsWatchedToday = adsWatchedData[today] || 0;
-
                     if (adsWatchedToday >= DAILY_AD_LIMIT) {
                         showToast("You have reached your daily ad limit.");
                         return;
@@ -257,7 +305,6 @@
                     const newBalance = (data.balance || 0) + AD_REWARD;
                     const newTotalEarned = (data.totalEarned || 0) + AD_REWARD;
                     const newAdsWatchedToday = adsWatchedToday + 1;
-                    
                     transaction.update(userRef, {
                         balance: newBalance,
                         totalEarned: newTotalEarned,
@@ -270,8 +317,7 @@
                 });
                 showToast(`+${AD_REWARD.toFixed(2)} BDT added!`);
             } catch (error) {
-                if (error.message.includes("limit")) {} 
-                else {
+                if (!error.message.includes("limit")) {
                     console.error("Reward Transaction failed: ", error);
                     showToast("An error occurred. Please try again.");
                 }
@@ -281,7 +327,6 @@
                 updateAllUIElements();
             }
         }
-        
         function updateAdsCountUI() {
              if (!userData) return;
              const today = new Date().toISOString().slice(0, 10);
@@ -292,7 +337,6 @@
              const startAdButton = document.getElementById('start-ad-btn');
              if (adsLeftText) adsLeftText.innerText = `Watch short ads to earn. (${adsLeft > 0 ? adsLeft : 0} left)`;
              if (adsRemainingText) adsRemainingText.innerText = adsLeft > 0 ? adsLeft : 0;
-             
              if(adsLeft <= 0) {
                 if (startAdButton) {
                     startAdButton.disabled = true;
@@ -301,7 +345,6 @@
                 }
              }
         }
-
         function updateAllUIElements() {
             if (!userData) return;
             const balanceText = `BDT ${userData.balance.toFixed(2)}`;
