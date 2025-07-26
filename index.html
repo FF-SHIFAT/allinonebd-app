@@ -18,29 +18,8 @@
         .page.active { display: block; }
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background-color: #2d3748; color: white; padding: 10px 20px; border-radius: 9999px; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-        
-        #ad-view-container { 
-            position: fixed; 
-            top: 0; left: 0; right: 0; bottom: 0; 
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 500; 
-            display: none; 
-            align-items: center; 
-            justify-content: center;
-        }
-        #ad-content-box {
-            position: relative;
-            background-color: white;
-            width: 90%;
-            max-width: 380px;
-            height: 70%;
-            max-height: 500px;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+        #ad-view-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 500; display: none; align-items: center; justify-content: center; }
+        #ad-content-box { position: relative; background-color: white; width: 90%; max-width: 380px; height: 70%; max-height: 500px; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -217,7 +196,7 @@
         };
         
         // ==================================================================
-        // ★★★ Ad Viewing Logic (Final Version using Interstitial Ad) ★★★
+        // ★★★ Ad Viewing Logic (Final Corrected Version) ★★★
         // ==================================================================
         const AD_REWARD = 0.10;
         const DAILY_AD_LIMIT = 30;
@@ -241,64 +220,93 @@
 
             const adScript = document.createElement('script');
             adScript.innerHTML = getInterstitialAdScript();
+            
+            // ★★★ নতুন লজিক শুরু ★★★
+            // বিজ্ঞাপন লোড হওয়ার জন্য অপেক্ষা করা হবে
+            let adLoaded = false;
+            const observer = new MutationObserver((mutationsList, observer) => {
+                for(const mutation of mutationsList) {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        // যখনই adContentBox-এর ভেতরে কোনো কিছু (যেমন iframe) যোগ হবে
+                        const adElement = adContentBox.querySelector('iframe, div[class*="ad"]');
+                        if (adElement) {
+                            adLoaded = true;
+                            startTimer(); // টাইমার চালু করার ফাংশন কল করা হবে
+                            observer.disconnect(); // একবার বিজ্ঞাপন লোড হলে আর চেক করার দরকার নেই
+                            break;
+                        }
+                    }
+                }
+            });
+            observer.observe(adContentBox, { childList: true, subtree: true });
+
+            // এখন স্ক্রিপ্ট যোগ করা হচ্ছে
             adContentBox.appendChild(adScript);
 
-            let timeLeft = 15;
-            const timerDiv = document.createElement('div');
-            timerDiv.style.position = 'absolute';
-            timerDiv.style.top = '10px';
-            timerDiv.style.right = '10px';
-            timerDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
-            timerDiv.style.color = 'white';
-            timerDiv.style.padding = '2px 8px';
-            timerDiv.style.borderRadius = '10px';
-            timerDiv.style.fontSize = '12px';
-            timerDiv.style.zIndex = '100';
-            adContentBox.appendChild(timerDiv);
-            
-            adTimerInterval = setInterval(() => {
-                if (timeLeft >= 0) {
-                    timerDiv.innerText = `${timeLeft}s`;
+            // যদি ৫ সেকেন্ডের মধ্যে কোনো বিজ্ঞাপন লোড না হয়
+            setTimeout(() => {
+                if (!adLoaded) {
+                    observer.disconnect();
+                    showToast("Ad failed to load. Please try again.");
+                    adViewContainer.style.display = 'none';
                 }
-                if (timeLeft < 0) {
-                    clearInterval(adTimerInterval);
-                    timerCompleted = true;
-                    timerDiv.innerHTML = `✅`;
-                    
-                    const closeButton = document.createElement('button');
-                    closeButton.innerHTML = '&times;';
-                    closeButton.style.position = 'absolute';
-                    closeButton.style.top = '5px';
-                    closeButton.style.left = '5px';
-                    closeButton.style.width = '24px';
-                    closeButton.style.height = '24px';
-                    closeButton.style.border = 'none';
-                    closeButton.style.background = 'rgba(0,0,0,0.5)';
-                    closeButton.style.color = 'white';
-                    closeButton.style.borderRadius = '50%';
-                    closeButton.style.cursor = 'pointer';
-                    closeButton.style.zIndex = '101';
-                    closeButton.style.fontSize = '18px';
-                    closeButton.style.lineHeight = '24px';
-                    closeButton.onclick = claimAdReward;
-                    adContentBox.appendChild(closeButton);
-                }
-                timeLeft--;
-            }, 1000);
+            }, 5000);
+
+            function startTimer() {
+                let timeLeft = 15;
+                const timerDiv = document.createElement('div');
+                timerDiv.style.position = 'absolute';
+                timerDiv.style.top = '10px';
+                timerDiv.style.right = '10px';
+                timerDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                timerDiv.style.color = 'white';
+                timerDiv.style.padding = '2px 8px';
+                timerDiv.style.borderRadius = '10px';
+                timerDiv.style.fontSize = '12px';
+                timerDiv.style.zIndex = '100';
+                adContentBox.appendChild(timerDiv);
+                
+                adTimerInterval = setInterval(() => {
+                    if (timeLeft >= 0) {
+                        timerDiv.innerText = `${timeLeft}s`;
+                    }
+                    if (timeLeft < 0) {
+                        clearInterval(adTimerInterval);
+                        timerCompleted = true;
+                        timerDiv.innerHTML = `✅`;
+                        
+                        const closeButton = document.createElement('button');
+                        closeButton.innerHTML = '&times;';
+                        closeButton.style.position = 'absolute';
+                        closeButton.style.top = '5px';
+                        closeButton.style.left = '5px';
+                        closeButton.style.width = '24px';
+                        closeButton.style.height = '24px';
+                        closeButton.style.border = 'none';
+                        closeButton.style.background = 'rgba(0,0,0,0.5)';
+                        closeButton.style.color = 'white';
+                        closeButton.style.borderRadius = '50%';
+                        closeButton.style.cursor = 'pointer';
+                        closeButton.style.zIndex = '101';
+                        closeButton.style.fontSize = '18px';
+                        closeButton.style.lineHeight = '24px';
+                        closeButton.onclick = claimAdReward;
+                        adContentBox.appendChild(closeButton);
+                    }
+                    timeLeft--;
+                }, 1000);
+            }
         };
         
         window.claimAdReward = async function() {
+            const adViewContainer = document.getElementById('ad-view-container');
             if (!timerCompleted) {
-                // টাইমার শেষ না হলে বিজ্ঞাপন বন্ধ করতে দেবে, কিন্তু টাকা দেবে না।
-                const adViewContainer = document.getElementById('ad-view-container');
                 adViewContainer.style.display = 'none';
                 if(adTimerInterval) clearInterval(adTimerInterval);
                 timerCompleted = false;
                 showToast("Ad closed before timer finished. No reward.");
                 return;
             }
-            const adViewContainer = document.getElementById('ad-view-container');
-            
             try {
                 await runTransaction(db, async (transaction) => {
                     const userDoc = await transaction.get(userRef);
@@ -483,7 +491,6 @@
                 input.placeholder = 'e.g., 01700000000';
             }
         };
-
     </script>
 </body>
 </html>
