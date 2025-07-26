@@ -18,8 +18,23 @@
         .page.active { display: block; }
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background-color: #2d3748; color: white; padding: 10px 20px; border-radius: 9999px; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-        #ad-view-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 500; display: none; align-items: center; justify-content: center; }
-        #ad-content-box { position: relative; background-color: white; width: 90%; max-width: 380px; height: 70%; max-height: 500px; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        #ad-view-container { 
+            position: fixed; 
+            top: 0; left: 0; right: 0; bottom: 0; 
+            background-color: #ffffff;
+            z-index: 500; 
+            display: none; 
+            flex-direction: column;
+            padding: 1rem;
+        }
+        #ad-content-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -154,7 +169,7 @@
         let userRef = null;
         let userData = null;
 
-        // --- Navigation Logic and other functions (All functions are included below) ---
+        // --- All Functions Start Here ---
         let pageHistory = ['home-page'];
         window.navigateTo = function(pageId) {
             const currentPageId = pageHistory[pageHistory.length - 1];
@@ -195,9 +210,6 @@
             setTimeout(() => { toast.style.opacity = 0; }, 2000);
         };
         
-        // ==================================================================
-        // ★★★ Ad Viewing Logic (Final, Most Reliable Version) ★★★
-        // ==================================================================
         const AD_REWARD = 0.10;
         const DAILY_AD_LIMIT = 30;
         let adTimerInterval = null;
@@ -225,7 +237,8 @@
             const observer = new MutationObserver((mutationsList, obs) => {
                 for(const mutation of mutationsList) {
                     if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                        if (adContentBox.querySelector('iframe, div[id*="ad"], div[class*="ad"]')) {
+                        const adElement = adContentBox.querySelector('iframe, div[id*="ad"], div[class*="ad"]');
+                        if (adElement) {
                             adLoaded = true;
                             startTimer(); 
                             obs.disconnect(); 
@@ -244,7 +257,7 @@
                     showToast("Ad failed to load. Please try again.");
                     adViewContainer.style.display = 'none';
                 }
-            }, 5000); // 5 সেকেন্ড পর টাইমআউট
+            }, 5000);
 
             function startTimer() {
                 let timeLeft = 15;
