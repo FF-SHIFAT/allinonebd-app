@@ -20,18 +20,27 @@
         .page.active { display: block; }
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background-color: #2d3748; color: white; padding: 10px 20px; border-radius: 9999px; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-        #page-container {
-            padding-bottom: 80px; /* নিচের নেভিগেশন বারের জায়গার জন্য */
+        
+        /* ★★★ স্ক্রল এবং কিবোর্ডের সমস্যা সমাধান ★★★ */
+        #main-app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+        #page-container {
+            flex-grow: 1;
+        }
+        
+        /* ★★★ নেভিগেশন বার বড় করার জন্য নতুন স্টাইল ★★★ */
         .nav-link {
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
+            padding-top: 0.75rem; /* 12px */
+            padding-bottom: 0.75rem; /* 12px */
         }
         .nav-link i {
-            font-size: 1.75rem;
+            font-size: 1.75rem; /* 28px */
         }
         .nav-link span {
-            font-size: 0.875rem;
+            font-size: 0.875rem; /* 14px */
         }
     </style>
 </head>
@@ -130,7 +139,7 @@
                 <button id="start-ad-btn" onclick="startAdView()" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-purple-700">Start Viewing Ads</button>
             </div>
         </div>
-        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bottom-nav-gradient text-white p-2 flex justify-around rounded-t-2xl shadow-lg">
+        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bottom-nav-gradient text-white flex justify-around rounded-t-2xl shadow-lg">
             <a href="#" onclick="navigateTo('home-page')" class="nav-link text-center rounded-lg"><i class="ph-house-fill"></i><span class="block font-semibold">Home</span></a>
             <a href="#" onclick="navigateTo('earn-page')" class="nav-link text-center rounded-lg"><i class="ph-money-fill"></i><span class="block font-semibold">Earn</span></a>
             <a href="#" onclick="navigateTo('withdraw-page')" class="nav-link text-center rounded-lg"><i class="ph-wallet-fill"></i><span class="block font-semibold">Withdraw</span></a>
@@ -358,7 +367,8 @@
                 document.getElementById('user-name').innerText = "Error during load";
                 document.getElementById('user-balance').innerText = "BDT 0.00";
             }
-            document.getElementById('referral-note-content').innerHTML = referralNoteLanguages['en'];
+            const referralNoteContent = document.getElementById('referral-note-content');
+            if(referralNoteContent) referralNoteContent.innerHTML = referralNoteLanguages['en'];
         });
 
         window.copyReferralLink = function() {
