@@ -21,17 +21,17 @@
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background-color: #2d3748; color: white; padding: 10px 20px; border-radius: 9999px; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
         #page-container {
-            padding-bottom: 90px; 
+            padding-bottom: 90px;
         }
         .nav-link {
-            padding-top: 0.8rem;
+            padding-top: 0.9rem;
             padding-bottom: 0.8rem;
         }
         .nav-link i {
             font-size: 1.8rem;
         }
         .nav-link span {
-            font-size: 0.9rem;
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -111,7 +111,7 @@
                  <div class="mt-6 space-y-4">
                     <div><label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label><select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"><option value="bkash">Bkash</option><option value="nagad">Nagad</option><option value="rocket">Rocket</option><option value="payoneer">Payoneer</option></select></div>
                     <div><label id="withdraw-address-label" for="withdraw-address" class="block text-sm font-medium text-gray-700">Account Number</label><input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000"></div>
-                    <div><label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 2000 BDT)</label><input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="2000"></div>
+                    <div><label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 1000 BDT)</label><input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="1000"></div>
                  </div>
                  <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
                  <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
@@ -156,42 +156,10 @@
                     <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
                  </div>
             </div>
-            <div id="ads-task-page" class="page p-4 flex flex-col h-full">
-                <div class="space-y-3 mb-4">
-                    <div class="p-2 text-center bg-gray-100 rounded-lg">
-                        <script type="text/javascript">
-                            atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                        </script>
-                        <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
-                    </div>
-                    <div class="p-2 text-center bg-gray-100 rounded-lg">
-                        <script type="text/javascript">
-                            atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                        </script>
-                        <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
-                    </div>
-                </div>
-            
-                <div class="flex-grow flex flex-col items-center justify-center text-center">
-                    <h2 class="text-2xl font-bold text-gray-800">View Ads</h2>
-                    <p class="text-gray-600 mt-2">You have <span id="ads-remaining" class="font-bold text-blue-600">250</span> ads left for today.</p>
-                    <button id="start-ad-btn" onclick="startAdView()" class="w-full max-w-sm bg-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-purple-700">Start Viewing Ads</button>
-                </div>
-            
-                <div class="space-y-3 mt-4">
-                    <div class="p-2 text-center bg-gray-100 rounded-lg">
-                        <script type="text/javascript">
-                            atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                        </script>
-                        <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
-                    </div>
-                    <div class="p-2 text-center bg-gray-100 rounded-lg">
-                        <script type="text/javascript">
-                            atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                        </script>
-                        <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
-                    </div>
-                </div>
+            <div id="ads-task-page" class="page p-4">
+                <h2 class="text-2xl font-bold text-gray-800">View Ads</h2>
+                <p class="text-gray-600 mt-2">You have <span id="ads-remaining" class="font-bold text-blue-600">250</span> ads left for today.</p>
+                <button id="start-ad-btn" onclick="startAdView()" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-purple-700">Start Viewing Ads</button>
             </div>
         </div>
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bottom-nav-gradient text-white flex justify-around rounded-t-2xl shadow-lg">
@@ -462,8 +430,8 @@
         };
 
         const referralNoteLanguages = {
-            en: `<p>You will receive a <b>10 BDT</b> bonus when your referred friend meets the following conditions:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li><li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li></ul><p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p>`,
-            bn: `<p>আপনার রেফার করা বন্ধু নিচের শর্তগুলো পূরণ করলে আপনি <b>10 BDT</b> বোনাস পাবেন:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">ন্যূনতম ৭ দিন সম্পূর্ণ কাজ করতে হবে।</span></li><li><span class="text-red-600 font-bold">এক মাসের মধ্যে কমপক্ষে ১৫ দিন সক্রিয়ভাবে কাজ করতে হবে।</span></li></ul><p class="text-xs text-gray-500 mt-2">শর্ত পূরণ না হওয়া পর্যন্ত বোনাসটি আপনার Pending Balance-এ থাকবে।</p>`
+            en: `<p>You will receive a <b>5 BDT</b> bonus when your referred friend meets the following conditions:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li><li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li></ul><p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p>`,
+            bn: `<p>আপনার রেফার করা বন্ধু নিচের শর্তগুলো পূরণ করলে আপনি <b>5 BDT</b> বোনাস পাবেন:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">ন্যূনতম ৭ দিন সম্পূর্ণ কাজ করতে হবে।</span></li><li><span class="text-red-600 font-bold">এক মাসের মধ্যে কমপক্ষে ১৫ দিন সক্রিয়ভাবে কাজ করতে হবে।</span></li></ul><p class="text-xs text-gray-500 mt-2">শর্ত পূরণ না হওয়া পর্যন্ত বোনাসটি আপনার Pending Balance-এ থাকবে।</p>`
         };
         let currentReferralNoteLang = 'en';
         window.toggleReferralNoteLanguage = function() {
