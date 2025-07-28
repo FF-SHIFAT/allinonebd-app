@@ -23,16 +23,15 @@
         #page-container {
             padding-bottom: 80px; /* নিচের নেভিগেশন বারের জায়গার জন্য */
         }
-        /* ★★★ নেভিগেশন বার বড় করার জন্য নতুন স্টাইল ★★★ */
         .nav-link {
-            padding-top: 0.75rem; /* 12px */
-            padding-bottom: 0.75rem; /* 12px */
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
         }
         .nav-link i {
-            font-size: 1.75rem; /* 28px */
+            font-size: 1.75rem;
         }
         .nav-link span {
-            font-size: 0.875rem; /* 14px */
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -195,12 +194,11 @@
                 updateHomeTaskStats();
             }
         };
-        // ★★★ সতর্কবার্তার সময় ৪ সেকেন্ড করা হয়েছে ★★★
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.style.opacity = 1;
-            setTimeout(() => { toast.style.opacity = 0; }, 4000); // 2 সেকেন্ড থেকে বাড়িয়ে 4 সেকেন্ড করা হলো
+            setTimeout(() => { toast.style.opacity = 0; }, 4000);
         };
         
         window.playGames = function() {
@@ -209,9 +207,6 @@
             window.Telegram.WebApp.openLink(gameWebsiteUrl);
         };
         
-        // ==================================================================
-        // ★★★ "View Ads" Logic (Final & Secure Version) ★★★
-        // ==================================================================
         const AD_REWARD = 0.02; 
         const DAILY_AD_LIMIT = 250;
         let isTimerFinished = false;
@@ -219,15 +214,12 @@
         window.startAdView = function() {
             isTimerFinished = false;
             
-            // 1. নিজের টাইমার চালু করা হচ্ছে
             setTimeout(() => {
                 isTimerFinished = true;
-            }, 15000); // 15 সেকেন্ড
+            }, 15000);
 
-            // 2. Monetag SDK কল করা হচ্ছে
             if (typeof window.show_9635771 === 'function') {
                 window.show_9635771().then(() => {
-                    // বিজ্ঞাপন বন্ধ হলে এই অংশটি কাজ করবে
                     if(isTimerFinished) {
                         claimAdReward(true);
                     } else {
@@ -235,7 +227,6 @@
                         claimAdReward(false);
                     }
                 }).catch(() => {
-                    // বিজ্ঞাপন লোড হতে ব্যর্থ হলে
                     showToast("Ad failed to load.");
                     claimAdReward(false);
                 });
@@ -282,8 +273,7 @@
                 updateAllUIElements();
             }
         };
-
-        // ★★★ হোম পেজের টাস্কের হিসাব দেখানোর জন্য নতুন ফাংশন ★★★
+        
         function updateHomeTaskStats() {
             if (!userData) return;
             const today = new Date().toISOString().slice(0, 10);
@@ -323,7 +313,7 @@
             const totalAdsWatched = Object.values(userData.adsWatched || {}).reduce((sum, count) => sum + count, 0);
             document.getElementById('profile-ads-watched').innerText = totalAdsWatched;
             updateAdsCountUI();
-            updateHomeTaskStats(); // হোম পেজও আপডেট করা হচ্ছে
+            updateHomeTaskStats();
         };
 
         window.addEventListener('load', async function () {
