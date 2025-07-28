@@ -44,6 +44,9 @@
                         <h2 class="text-xl font-semibold text-gray-800 mb-1">Earn Rewards</h2>
                         <div class="mt-4 bg-white p-4 rounded-lg border">
                             <h3 class="text-lg font-semibold text-gray-700">Today's Tasks</h3>
+                            <div class="flex justify-between items-center mt-3 text-gray-600"><span>Total Tasks:</span><span id="total-tasks" class="font-bold">1000</span></div>
+                            <div class="flex justify-between items-center mt-1 text-gray-600"><span>Completed:</span><span id="completed-tasks" class="font-bold text-green-600">0</span></div>
+                            <div class="flex justify-between items-center mt-1 text-gray-600"><span>Remaining:</span><span id="remaining-tasks" class="font-bold text-red-600">1000</span></div>
                             <button onclick="navigateTo('earn-page')" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-blue-700 transition duration-300 flex items-center justify-center space-x-2"><span>Start Earning</span><i class="ph-arrow-right-bold"></i></button>
                         </div>
                     </section>
@@ -182,19 +185,13 @@
             setTimeout(() => { toast.style.opacity = 0; }, 2000);
         };
         
-        // ★★★ "Play Games" বাটনের জন্য নতুন ফাংশন ★★★
         window.playGames = function() {
             const gameWebsiteUrl = "https://your-game-website-subdomain.allinonebd.me"; // আপনার গেমিং ওয়েবসাইটের লিংক এখানে দিন
-            
             showToast("Opening Game Zone...");
-            // সরাসরি গেমিং ওয়েবসাইটে পাঠানো হচ্ছে
             window.Telegram.WebApp.openLink(gameWebsiteUrl);
         };
         
-        // ==================================================================
-        // ★★★ "View Ads" Logic (using Telegram Mini App SDK) ★★★
-        // ==================================================================
-        const AD_REWARD = 0.02;
+        const AD_REWARD = 0.02; 
         const DAILY_AD_LIMIT = 250;
 
         window.startAdView = function() {
@@ -320,7 +317,6 @@
                 document.getElementById('user-name').innerText = "Error during load";
                 document.getElementById('user-balance').innerText = "BDT 0.00";
             }
-            // Initialize language-specific content if needed (e.g., for profile page)
             document.getElementById('referral-note-content').innerHTML = referralNoteLanguages['en'];
         });
 
@@ -370,7 +366,7 @@
             const toggleButton = document.getElementById('referral-lang-toggle');
             toggleButton.innerText = (currentReferralNoteLang === 'en') ? 'বাংলা' : 'English';
         };
-
+        
         window.updateWithdrawUI = function() {
             const method = document.getElementById('withdraw-method').value;
             const label = document.getElementById('withdraw-address-label');
