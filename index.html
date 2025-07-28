@@ -31,7 +31,7 @@
             font-size: 1.8rem;
         }
         .nav-link span {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -49,7 +49,9 @@
         <div class="bg-blue-100 text-blue-800 p-2 text-sm font-semibold">
             <marquee id="notice-bar-text">Loading latest announcements...</marquee>
         </div>
+        
         <div id="page-container">
+        
             <div id="home-page" class="page active">
                 <div class="p-2 text-center bg-gray-100 my-2">
                     <script type="text/javascript">
@@ -92,36 +94,36 @@
                     </script>
                     <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
                  </div>
-                <h2 class="text-2xl font-bold text-gray-800">Available Tasks</h2>
-                <p class="text-gray-600 mt-2">Choose a task type to start earning.</p>
-                <div class="space-y-4 mt-6">
-                    <button onclick="playGames()" class="w-full bg-teal-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-left flex items-center space-x-4"><i class="ph-game-controller-bold text-3xl"></i><div><span class="text-lg">Play Games & Earn</span><span class="text-sm block opacity-80">Play fun games to get rewards.</span></div></button>
-                    <button onclick="navigateTo('ads-task-page')" class="w-full bg-purple-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-purple-600 transition duration-300 text-left flex items-center space-x-4"><i class="ph-monitor-play-bold text-3xl"></i><div><span class="text-lg">View Daily Ads</span><span id="ads-left-text" class="text-sm block opacity-80">Watch short ads to earn.</span></div></button>
-                </div>
-                 <div class="p-2 text-center bg-gray-100 mt-6">
+                 <h2 class="text-2xl font-bold text-gray-800">Available Tasks</h2>
+                 <p class="text-gray-600 mt-2">Choose a task type to start earning.</p>
+                 <div class="space-y-4 mt-6">
+                     <button onclick="playGames()" class="w-full bg-teal-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-left flex items-center space-x-4"><i class="ph-game-controller-bold text-3xl"></i><div><span class="text-lg">Play Games & Earn</span><span class="text-sm block opacity-80">Play fun games to get rewards.</span></div></button>
+                     <button onclick="navigateTo('ads-task-page')" class="w-full bg-purple-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-purple-600 transition duration-300 text-left flex items-center space-x-4"><i class="ph-monitor-play-bold text-3xl"></i><div><span class="text-lg">View Daily Ads</span><span id="ads-left-text" class="text-sm block opacity-80">Watch short ads to earn.</span></div></button>
+                 </div>
+                  <div class="p-2 text-center bg-gray-100 mt-6">
                     <script type="text/javascript">
                         atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
                     </script>
                     <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
-                 </div>
+                  </div>
             </div>
             <div id="withdraw-page" class="page p-4">
-                 <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
-                 <div class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg"><p class="text-sm text-blue-800"><b>Note:</b> Withdrawals are processed twice a month: on the 15th-17th, and on the last 3 days of the month.</p></div>
-                 <div class="mt-6 space-y-4">
+                <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
+                <div class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg"><p class="text-sm text-blue-800"><b>Note:</b> Withdrawals are processed twice a month: on the 15th-17th, and on the last 3 days of the month.</p></div>
+                <div class="mt-6 space-y-4">
                     <div><label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label><select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"><option value="bkash">Bkash</option><option value="nagad">Nagad</option><option value="rocket">Rocket</option><option value="payoneer">Payoneer</option></select></div>
                     <div><label id="withdraw-address-label" for="withdraw-address" class="block text-sm font-medium text-gray-700">Account Number</label><input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000"></div>
                     <div><label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 1000 BDT)</label><input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="1000"></div>
-                 </div>
-                 <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
-                 <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
-                 <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center"><p class="text-gray-600">Your payment history will appear here.</p></div>
-                 <div class="p-2 text-center bg-gray-100 mt-4">
+                </div>
+                <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
+                <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
+                <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center"><p class="text-gray-600">Your payment history will appear here.</p></div>
+                <div class="p-2 text-center bg-gray-100 mt-4">
                     <script type="text/javascript">
                         atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
                     </script>
                     <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
-                 </div>
+                </div>
             </div>
             <div id="profile-page" class="page p-4">
                 <div class="text-center">
@@ -193,7 +195,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bottom-nav-gradient text-white flex justify-around rounded-t-2xl shadow-lg">
             <a href="#" onclick="navigateTo('home-page')" class="nav-link text-center rounded-lg"><i class="ph-house-fill"></i><span class="block font-semibold">Home</span></a>
             <a href="#" onclick="navigateTo('earn-page')" class="nav-link text-center rounded-lg"><i class="ph-money-fill"></i><span class="block font-semibold">Earn</span></a>
@@ -360,11 +363,11 @@
              if (adsLeftText) adsLeftText.innerText = `Watch short ads to earn. (${adsLeft > 0 ? adsLeft : 0} left)`;
              if (adsRemainingText) adsRemainingText.innerText = `${adsLeft > 0 ? adsLeft : 0}`;
              if(adsLeft <= 0) {
-                if (startAdButton) {
-                    startAdButton.disabled = true;
-                    startAdButton.classList.add('disabled-button');
-                    startAdButton.innerText = 'Daily Limit Reached';
-                }
+                 if (startAdButton) {
+                     startAdButton.disabled = true;
+                     startAdButton.classList.add('disabled-button');
+                     startAdButton.innerText = 'Daily Limit Reached';
+                 }
              }
         };
 
