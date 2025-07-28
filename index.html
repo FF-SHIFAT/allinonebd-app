@@ -21,7 +21,7 @@
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background-color: #2d3748; color: white; padding: 10px 20px; border-radius: 9999px; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
         #page-container {
-            padding-bottom: 90px;
+            padding-bottom: 90px; 
         }
         .nav-link {
             padding-top: 0.8rem;
@@ -31,7 +31,7 @@
             font-size: 1.8rem;
         }
         .nav-link span {
-            font-size: 0.9rem;
+            font-size: 1.3rem;
         }
     </style>
 </head>
@@ -178,11 +178,19 @@
                     <button id="start-ad-btn" onclick="startAdView()" class="w-full max-w-sm bg-purple-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-purple-700">Start Viewing Ads</button>
                 </div>
             
-                <div class="p-2 text-center bg-gray-100 mt-4 rounded-lg">
-                    <script type="text/javascript">
-                        atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                    </script>
-                    <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
+                <div class="space-y-3 mt-4">
+                    <div class="p-2 text-center bg-gray-100 rounded-lg">
+                        <script type="text/javascript">
+                            atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+                        </script>
+                        <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
+                    </div>
+                    <div class="p-2 text-center bg-gray-100 rounded-lg">
+                        <script type="text/javascript">
+                            atOptions = { 'key' : 'ef8efd5919be438a38a7ca388b1d4658', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+                        </script>
+                        <script type="text/javascript" src="//www.highperformanceformat.com/ef8efd5919be438a38a7ca388b1d4658/invoke.js"></script>
+                    </div>
                 </div>
             </div>
         </div>
@@ -454,8 +462,8 @@
         };
 
         const referralNoteLanguages = {
-            en: `<p>You will receive a <b>10 BDT</b> bonus when your referred friend meets the following conditions:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li><li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li></ul><p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p>`,
-            bn: `<p>আপনার রেফার করা বন্ধু নিচের শর্তগুলো পূরণ করলে আপনি <b>10 BDT</b> বোনাস পাবেন:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">ন্যূনতম ৭ দিন সম্পূর্ণ কাজ করতে হবে।</span></li><li><span class="text-red-600 font-bold">এক মাসের মধ্যে কমপক্ষে ১৫ দিন সক্রিয়ভাবে কাজ করতে হবে।</span></li></ul><p class="text-xs text-gray-500 mt-2">শর্ত পূরণ না হওয়া পর্যন্ত বোনাসটি আপনার Pending Balance-এ থাকবে।</p>`
+            en: `<p>You will receive a <b>5 BDT</b> bonus when your referred friend meets the following conditions:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li><li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li></ul><p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p>`,
+            bn: `<p>আপনার রেফার করা বন্ধু নিচের শর্তগুলো পূরণ করলে আপনি <b>5 BDT</b> বোনাস পাবেন:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">ন্যূনতম ৭ দিন সম্পূর্ণ কাজ করতে হবে।</span></li><li><span class="text-red-600 font-bold">এক মাসের মধ্যে কমপক্ষে ১৫ দিন সক্রিয়ভাবে কাজ করতে হবে।</span></li></ul><p class="text-xs text-gray-500 mt-2">শর্ত পূরণ না হওয়া পর্যন্ত বোনাসটি আপনার Pending Balance-এ থাকবে।</p>`
         };
         let currentReferralNoteLang = 'en';
         window.toggleReferralNoteLanguage = function() {
