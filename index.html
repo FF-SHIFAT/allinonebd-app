@@ -20,10 +20,19 @@
         .page.active { display: block; }
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background-color: #2d3748; color: white; padding: 10px 20px; border-radius: 9999px; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-        
-        /* ★★★ স্ক্রল সমস্যার সমাধান ★★★ */
         #page-container {
             padding-bottom: 80px; /* নিচের নেভিগেশন বারের জায়গার জন্য */
+        }
+        /* ★★★ নেভিগেশন বার বড় করার জন্য নতুন স্টাইল ★★★ */
+        .nav-link {
+            padding-top: 0.75rem; /* 12px */
+            padding-bottom: 0.75rem; /* 12px */
+        }
+        .nav-link i {
+            font-size: 1.75rem; /* 28px */
+        }
+        .nav-link span {
+            font-size: 0.875rem; /* 14px */
         }
     </style>
 </head>
@@ -49,6 +58,11 @@
                         <h2 class="text-xl font-semibold text-gray-800 mb-1">Earn Rewards</h2>
                         <div class="mt-4 bg-white p-4 rounded-lg border">
                             <h3 class="text-lg font-semibold text-gray-700">Today's Tasks</h3>
+                            <div id="home-task-stats" class="space-y-1 mt-3 text-gray-600">
+                                <div class="flex justify-between items-center"><span>Total Ads:</span><span id="home-total-tasks" class="font-bold">...</span></div>
+                                <div class="flex justify-between items-center"><span>Completed:</span><span id="home-completed-tasks" class="font-bold text-green-600">...</span></div>
+                                <div class="flex justify-between items-center"><span>Remaining:</span><span id="home-remaining-tasks" class="font-bold text-red-600">...</span></div>
+                            </div>
                             <button onclick="navigateTo('earn-page')" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg mt-5 hover:bg-blue-700 transition duration-300 flex items-center justify-center space-x-2"><span>Start Earning</span><i class="ph-arrow-right-bold"></i></button>
                         </div>
                     </section>
@@ -118,10 +132,10 @@
             </div>
         </div>
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bottom-nav-gradient text-white p-2 flex justify-around rounded-t-2xl shadow-lg">
-            <a href="#" onclick="navigateTo('home-page')" class="nav-link text-center p-2 rounded-lg"><i class="ph-house-fill text-2xl"></i><span class="text-xs block font-semibold">Home</span></a>
-            <a href="#" onclick="navigateTo('earn-page')" class="nav-link text-center p-2 rounded-lg"><i class="ph-money-fill text-2xl"></i><span class="text-xs block font-semibold">Earn</span></a>
-            <a href="#" onclick="navigateTo('withdraw-page')" class="nav-link text-center p-2 rounded-lg"><i class="ph-wallet-fill text-2xl"></i><span class="text-xs block font-semibold">Withdraw</span></a>
-            <a href="#" onclick="navigateTo('profile-page')" class="nav-link text-center p-2 rounded-lg"><i class="ph-user-fill text-2xl"></i><span class="text-xs block font-semibold">Profile</span></a>
+            <a href="#" onclick="navigateTo('home-page')" class="nav-link text-center rounded-lg"><i class="ph-house-fill"></i><span class="block font-semibold">Home</span></a>
+            <a href="#" onclick="navigateTo('earn-page')" class="nav-link text-center rounded-lg"><i class="ph-money-fill"></i><span class="block font-semibold">Earn</span></a>
+            <a href="#" onclick="navigateTo('withdraw-page')" class="nav-link text-center rounded-lg"><i class="ph-wallet-fill"></i><span class="block font-semibold">Withdraw</span></a>
+            <a href="#" onclick="navigateTo('profile-page')" class="nav-link text-center rounded-lg"><i class="ph-user-fill"></i><span class="block font-semibold">Profile</span></a>
         </nav>
     </div>
     
@@ -178,13 +192,15 @@
             });
             if (userData) {
                 updateAdsCountUI();
+                updateHomeTaskStats();
             }
         };
+        // ★★★ সতর্কবার্তার সময় ৪ সেকেন্ড করা হয়েছে ★★★
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.style.opacity = 1;
-            setTimeout(() => { toast.style.opacity = 0; }, 2000);
+            setTimeout(() => { toast.style.opacity = 0; }, 4000); // 2 সেকেন্ড থেকে বাড়িয়ে 4 সেকেন্ড করা হলো
         };
         
         window.playGames = function() {
@@ -201,20 +217,17 @@
         let isTimerFinished = false;
 
         window.startAdView = function() {
-            isTimerFinished = false; // প্রত্যেকবার রিসেট করা হচ্ছে
+            isTimerFinished = false;
             
             // 1. নিজের টাইমার চালু করা হচ্ছে
             setTimeout(() => {
                 isTimerFinished = true;
-                console.log("Internal 15-second timer finished.");
             }, 15000); // 15 সেকেন্ড
 
             // 2. Monetag SDK কল করা হচ্ছে
             if (typeof window.show_9635771 === 'function') {
                 window.show_9635771().then(() => {
                     // বিজ্ঞাপন বন্ধ হলে এই অংশটি কাজ করবে
-                    console.log('Ad closed by user.');
-                    // এখন চেক করা হবে যে ১৫ সেকেন্ড পার হয়েছে কিনা
                     if(isTimerFinished) {
                         claimAdReward(true);
                     } else {
@@ -232,12 +245,8 @@
         };
         
         async function claimAdReward(isSuccess) {
-            if (!isSuccess) {
-                console.log("Ad failed or closed early. No reward given.");
-                return; 
-            }
+            if (!isSuccess) return; 
 
-            console.log("Claiming reward...");
             try {
                 await runTransaction(db, async (transaction) => {
                     const userDoc = await transaction.get(userRef);
@@ -273,6 +282,18 @@
                 updateAllUIElements();
             }
         };
+
+        // ★★★ হোম পেজের টাস্কের হিসাব দেখানোর জন্য নতুন ফাংশন ★★★
+        function updateHomeTaskStats() {
+            if (!userData) return;
+            const today = new Date().toISOString().slice(0, 10);
+            const adsWatchedToday = (userData.adsWatched && userData.adsWatched[today]) || 0;
+            const adsLeft = DAILY_AD_LIMIT - adsWatchedToday;
+
+            document.getElementById('home-total-tasks').innerText = DAILY_AD_LIMIT;
+            document.getElementById('home-completed-tasks').innerText = adsWatchedToday;
+            document.getElementById('home-remaining-tasks').innerText = adsLeft > 0 ? adsLeft : 0;
+        }
         
         function updateAdsCountUI() {
              if (!userData) return;
@@ -302,6 +323,7 @@
             const totalAdsWatched = Object.values(userData.adsWatched || {}).reduce((sum, count) => sum + count, 0);
             document.getElementById('profile-ads-watched').innerText = totalAdsWatched;
             updateAdsCountUI();
+            updateHomeTaskStats(); // হোম পেজও আপডেট করা হচ্ছে
         };
 
         window.addEventListener('load', async function () {
