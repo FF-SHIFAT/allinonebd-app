@@ -63,14 +63,49 @@
                 <p class="text-gray-600 mt-2">Choose a task type to start earning.</p>
                 <div class="space-y-4 mt-6">
                     <button onclick="playGames()" class="w-full bg-teal-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-left flex items-center space-x-4"><i class="ph-game-controller-bold text-3xl"></i><div><span class="text-lg">Play Games & Earn</span><span class="text-sm block opacity-80">Play fun games to get rewards.</span></div></button>
-                    <button onclick="navigateTo('ads-task-page')" class="w-full bg-purple-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-purple-600 transition duration-300 text-left flex items-center space-x-4"><i class="ph-monitor-play-bold text-3xl"></i><div><span class="text-lg">View Daily Ads</span><span id="ads-left-text" class="text-sm block opacity-80">Watch short ads to earn. (250 left)</span></div></button>
+                    <button onclick="navigateTo('ads-task-page')" class="w-full bg-purple-500 text-white font-bold py-4 px-4 rounded-lg hover:bg-purple-600 transition duration-300 text-left flex items-center space-x-4"><i class="ph-monitor-play-bold text-3xl"></i><div><span class="text-lg">View Daily Ads</span><span id="ads-left-text" class="text-sm block opacity-80">Watch short ads to earn.</span></div></button>
                 </div>
                  <div class="p-2 text-center bg-gray-100 mt-6"><img src="https://placehold.co/320x50/eee/333?text=Bottom+Banner+Ad" alt="Bottom Banner Ad" class="mx-auto"></div>
             </div>
             <div id="withdraw-page" class="page p-4">
+                 <h2 class="text-2xl font-bold text-gray-800 mt-4">Withdraw Funds</h2>
+                 <div class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded-lg"><p class="text-sm text-blue-800"><b>Note:</b> Withdrawals are processed twice a month: on the 15th-17th, and on the last 3 days of the month.</p></div>
+                 <div class="mt-6 space-y-4">
+                    <div><label for="withdraw-method" class="block text-sm font-medium text-gray-700">Payment Method</label><select id="withdraw-method" onchange="updateWithdrawUI()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"><option value="bkash">Bkash</option><option value="nagad">Nagad</option><option value="rocket">Rocket</option><option value="payoneer">Payoneer</option></select></div>
+                    <div><label id="withdraw-address-label" for="withdraw-address" class="block text-sm font-medium text-gray-700">Account Number</label><input type="text" id="withdraw-address" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="e.g., 01700000000"></div>
+                    <div><label for="withdraw-amount" class="block text-sm font-medium text-gray-700">Amount (Min. 2000 BDT)</label><input type="number" id="withdraw-amount" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md p-2" placeholder="2000"></div>
                  </div>
+                 <button class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-700">Submit Request</button>
+                 <h3 class="text-xl font-bold text-gray-800 mt-8">Withdrawal History</h3>
+                 <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center"><p class="text-gray-600">Your payment history will appear here.</p></div>
+            </div>
             <div id="profile-page" class="page p-4">
-                 </div>
+                <div class="text-center">
+                    <img id="profile-avatar" src="https://placehold.co/80x80/e0e7ff/4338ca?text=U" class="w-20 h-20 rounded-full mx-auto border-4 border-white shadow-lg">
+                    <h2 id="profile-name" class="text-2xl font-bold text-gray-800 mt-3">Loading...</h2>
+                    <p id="profile-username" class="text-gray-500">@username</p>
+                    <div class="mt-2"><p class="text-lg font-semibold text-green-600">Balance: <span id="profile-balance">BDT 0.00</span></p><p class="text-sm font-medium text-yellow-600">Pending Balance: <span id="profile-pending-balance">BDT 0.00</span></p></div>
+                </div>
+                <div class="mt-8 grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border"><p class="text-sm text-gray-600">Total Earnings</p><p id="profile-total-earned" class="text-2xl font-bold text-blue-600">BDT 0.00</p></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border"><p class="text-sm text-gray-600">Ads Watched</p><p id="profile-ads-watched" class="text-2xl font-bold">0</p></div>
+                </div>
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold text-gray-800">Refer & Earn</h3>
+                    <div class="mt-4 bg-gray-50 border p-4 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div id="referral-note-content" class="text-left text-sm text-gray-700"><p>You will receive a <b>10 BDT</b> bonus when your referred friend meets the following conditions:</p><ul class="list-disc list-inside mt-1"><li><span class="text-red-600 font-bold">Must complete a full 7 days of work.</span></li><li><span class="text-red-600 font-bold">Must work actively for at least 15 days within a month.</span></li></ul><p class="text-xs text-gray-500 mt-2">The bonus will remain in your Pending Balance until the conditions are met.</p></div>
+                            <button id="referral-lang-toggle" onclick="toggleReferralNoteLanguage()" class="bg-gray-200 text-gray-800 font-semibold py-1 px-2 rounded-lg text-xs ml-2 flex-shrink-0">বাংলা</button>
+                        </div>
+                        <div class="mt-3 flex items-center bg-white border rounded-lg p-2"><input id="referral-link" type="text" class="flex-1 bg-transparent text-sm text-gray-700 focus:outline-none" value="Loading your link..." readonly><button onclick="copyReferralLink()" class="ml-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-md text-xs font-semibold">Copy</button></div>
+                        <button onclick="shareReferralLink()" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg mt-4 hover:bg-indigo-700">Share Link</button>
+                    </div>
+                </div>
+                 <div class="mt-8">
+                    <h3 class="text-xl font-bold text-gray-800">Your Referrals (<span id="profile-total-referrals">0</span>)</h3>
+                    <div class="mt-4 border rounded-lg p-3 bg-gray-50 text-center"><p class="text-gray-600">Your referred users' list will appear here.</p></div>
+                </div>
+            </div>
             <div id="ads-task-page" class="page p-4">
                 <h2 class="text-2xl font-bold text-gray-800">View Ads</h2>
                 <p class="text-gray-600 mt-2">You have <span id="ads-remaining" class="font-bold text-blue-600">250</span> ads left for today.</p>
@@ -93,7 +128,12 @@
         import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
-            // ... your config
+            apiKey: "AIzaSyDAVMpxqTzDCAhpIrwf-Vp4fhHcdls36yM",
+            authDomain: "allinonebdapp.firebaseapp.com",
+            projectId: "allinonebdapp",
+            storageBucket: "allinonebdapp.appspot.com",
+            messagingSenderId: "755907154415",
+            appId: "1:755907154415:web:f61e9fa40b23b47f91661a"
         };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -141,37 +181,27 @@
             toast.style.opacity = 1;
             setTimeout(() => { toast.style.opacity = 0; }, 2000);
         };
-
+        
         // ★★★ "Play Games" বাটনের জন্য নতুন ফাংশন ★★★
         window.playGames = function() {
             const gameWebsiteUrl = "https://your-game-website-subdomain.allinonebd.me"; // আপনার গেমিং ওয়েবসাইটের লিংক এখানে দিন
             
-            // Monetag SDK থেকে full screen ad দেখানোর ফাংশন কল করা হচ্ছে
-            if (typeof window.show_9635771 === 'function') {
-                window.show_9635771().finally(() => {
-                    // বিজ্ঞাপন সফল হোক বা ব্যর্থ হোক, ব্যবহারকারীকে গেমিং ওয়েবসাইটে পাঠানো হবে
-                    window.Telegram.WebApp.openLink(gameWebsiteUrl);
-                });
-            } else {
-                // যদি SDK লোড না হয়, সরাসরি ওয়েবসাইটে পাঠানো হবে
-                showToast("Opening Game Zone...");
-                window.Telegram.WebApp.openLink(gameWebsiteUrl);
-            }
+            showToast("Opening Game Zone...");
+            // সরাসরি গেমিং ওয়েবসাইটে পাঠানো হচ্ছে
+            window.Telegram.WebApp.openLink(gameWebsiteUrl);
         };
         
         // ==================================================================
         // ★★★ "View Ads" Logic (using Telegram Mini App SDK) ★★★
         // ==================================================================
-        const AD_REWARD = 0.02; 
+        const AD_REWARD = 0.02;
         const DAILY_AD_LIMIT = 250;
 
         window.startAdView = function() {
             if (typeof window.show_9635771 === 'function') {
                 window.show_9635771().then(() => {
-                    // বিজ্ঞাপন সফলভাবে দেখা হলে
                     claimAdReward(true);
                 }).catch(() => {
-                    // বিজ্ঞাপন ব্যর্থ হলে
                     showToast("Ad failed to load or was closed early.");
                     claimAdReward(false);
                 });
@@ -182,7 +212,6 @@
         
         async function claimAdReward(isSuccess) {
             if (!isSuccess) return;
-
             try {
                 await runTransaction(db, async (transaction) => {
                     const userDoc = await transaction.get(userRef);
@@ -228,7 +257,7 @@
              const adsRemainingText = document.getElementById('ads-remaining');
              const startAdButton = document.getElementById('start-ad-btn');
              if (adsLeftText) adsLeftText.innerText = `Watch short ads to earn. (${adsLeft > 0 ? adsLeft : 0} left)`;
-             if (adsRemainingText) adsRemainingText.innerText = adsLeft > 0 ? adsLeft : 0;
+             if (adsRemainingText) adsRemainingText.innerText = `${adsLeft > 0 ? adsLeft : 0}`;
              if(adsLeft <= 0) {
                 if (startAdButton) {
                     startAdButton.disabled = true;
@@ -291,7 +320,7 @@
                 document.getElementById('user-name').innerText = "Error during load";
                 document.getElementById('user-balance').innerText = "BDT 0.00";
             }
-            document.getElementById('task-rules-content').innerHTML = rules['en'];
+            // Initialize language-specific content if needed (e.g., for profile page)
             document.getElementById('referral-note-content').innerHTML = referralNoteLanguages['en'];
         });
 
@@ -340,17 +369,6 @@
             document.getElementById('referral-note-content').innerHTML = referralNoteLanguages[currentReferralNoteLang];
             const toggleButton = document.getElementById('referral-lang-toggle');
             toggleButton.innerText = (currentReferralNoteLang === 'en') ? 'বাংলা' : 'English';
-        };
-
-        const rules = {
-            en: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>Using any kind of <b>VPN/Proxy</b> is strictly prohibited.</li><li>Only one user can work from the same <b>Wi-Fi/IP address</b>.</li><li>Your account will be <b>blocked</b> for violating the rules.</li><li>You can use <b>Mobile Data</b> to work if needed.</li></ul><p class="text-sm text-gray-500 mt-2">Our system will check your IP address before starting the task.</p>`,
-            bn: `<ul class="list-disc list-inside mt-4 space-y-2 text-gray-700 bg-yellow-50 border border-yellow-200 p-4 rounded-lg"><li>যেকোনো ধরনের <b>ভিপিএন/প্রক্সি</b> ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</li><li>একই <b>ওয়াইফাই/আইপি অ্যাড্রেস</b> থেকে শুধুমাত্র একজনই কাজ করতে পারবেন।</li><li>নিয়ম ভঙ্গ করলে আপনার অ্যাকাউন্টটি <b>ব্লক</b> করে দেওয়া হবে।</li><li>প্রয়োজনে আপনি <b>মোবাইল ডেটা</b> ব্যবহার করে কাজ করতে পারেন।</li></ul><p class="text-sm text-gray-500 mt-2">কাজ শুরু করার আগে আমাদের সিস্টেম আপনার আইপি অ্যাড্রেস পরীক্ষা করবে।</p>`
-        };
-        let currentLanguage = 'en';
-        window.toggleLanguage = function() {
-            currentLanguage = (currentLanguage === 'en') ? 'bn' : 'en';
-            document.getElementById('task-rules-content').innerHTML = rules[currentLanguage];
-            document.getElementById('lang-toggle').innerText = (currentLanguage === 'en') ? 'বাংলা' : 'English';
         };
 
         window.updateWithdrawUI = function() {
