@@ -16,8 +16,20 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
         .bottom-nav-gradient { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
-        .page { display: none; }
-        .page.active { display: block; }
+        
+        /* === UPDATED STYLES START === */
+        .page {
+            display: none !important;
+        }
+        .page.active {
+            display: block !important;
+        }
+        /* This ensures the ads-task-page uses flex display only when it's active */
+        #ads-task-page.active {
+            display: flex !important;
+        }
+        /* === UPDATED STYLES END === */
+        
         .disabled-button { background-color: #9ca3af; cursor: not-allowed; }
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background-color: #2d3748; color: white; padding: 10px 20px; border-radius: 9999px; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
         #page-container {
